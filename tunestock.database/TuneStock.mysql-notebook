@@ -1,0 +1,1476 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "DB Notebook",
+    "content": "CREATE DATABASE TuneStock;\nUSE TuneStock;\n-- Tables ---------------------------------------\nCREATE TABLE User(\n    UserID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Username VARCHAR(50) NOT NULL,\n    Email VARCHAR(50) NOT NULL,\n    Password VARCHAR(20) NOT NULL,\n    IsDeleted BOOLEAN NOT NULL DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE Sound(\n    SoundID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    UserID INT NOT NULL,\n    SoundName VARCHAR(50) NOT NULL,\n    File VARCHAR(100) NOT NULL,\n    IsPremiun BOOLEAN DEFAULT FALSE,\n    Price DOUBLE NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserPurchases(\n    PurchaseID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    PurchasedDate DATETIME DEFAULT CURRENT_TIMESTAMP,\n    SoundPrice DOUBLE NOT NULL,\n    PaymentStatus BOOLEAN DEFAULT FALSE,\n    PaymentMethod VARCHAR(20) NOT NULL,\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserDownloads(\n    DownloadID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    SoundID_FK INT NOT NULL,\n    UserID_FK INT NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE Labels(\n    LabelID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Label VARCHAR(50) NOT NULL,\n    Description VARCHAR(100) NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserSoundStock(\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL\n);\n\nCREATE TABLE SoundsLabels(\n    SoundID_FK INT NOT NULL,\n    LabelID_FK INT NOT NULL\n);\n\n-- Foreign Keys --------------------------------\nALTER TABLE UserDownloads \nADD CONSTRAINT UserID_FK_UserDownloads \nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserDownloads\nADD CONSTRAINT SoundID_FK_UserDownloads\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT UserID_FK_UserSoundStock\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT SoundID_FK_UserSoundStock\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserPurchases \nADD CONSTRAINT UserID_FK_UserPurchases\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserPurchases\nADD CONSTRAINT SoundID_FK_UserPurchases\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT SoundID_FK_SoundsLabels\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT LabelID_FK_SoundsLabels\nFOREIGN KEY (LabelID_FK) REFERENCES Labels(LabelID);\n\nSELECT \n    CONSTRAINT_NAME, \n    TABLE_NAME, \n    COLUMN_NAME, \n    REFERENCED_TABLE_NAME, \n    REFERENCED_COLUMN_NAME\nFROM \n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE\nWHERE \n    TABLE_SCHEMA = 'TuneStock'\n    AND REFERENCED_TABLE_NAME IS NOT NULL;\n\n\nDELIMITER $$\nCREATE TRIGGER TRG_INSERT_UserPurchases\nAFTER INSERT ON UserPurchases\nFOR EACH ROW\nBEGIN\n    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)\n    VALUES (NEW.UserID_FK, NEW.SoundID_FK);\nEND$$\n\nDELIMITER ;\nSHOW TRIGGERS;\n\nDESCRIBE Sound;\n\nDELIMITER $$\n\nCREATE PROCEDURE InsertSoundAndLabel(\n    IN p_UserID INT, \n    IN p_SoundName VARCHAR(50),\n    IN p_File VARCHAR(100),\n    IN p_IsPremium BOOLEAN,\n    IN p_Price DOUBLE,\n    IN p_IsDeleted BOOLEAN,\n    IN p_CreatedBy VARCHAR(50),\n    IN p_CreatedDate DATETIME,\n    IN p_UpdatedBy VARCHAR(50),\n    IN p_UpdatedDate DATETIME,\n    IN p_LabelID INT\n    )\nBEGIN\n    DECLARE newSoundID INT;\n\n    -- Insertar en la tabla Sound\n    INSERT INTO Sound(\n        SoundName,\n        File,\n        IsPremium,\n        Price,\n        IsDeleted,\n        CreatedBy,\n        CreatedDate,\n        UpdatedBy,\n        UpdatedDate\n    ) VALUES (\n        p_SoundName,\n        p_File,\n        p_IsPremium,\n        p_Price,\n        p_IsDeleted,\n        p_CreatedBy,\n        p_CreatedDate,\n        p_UpdatedBy,\n        p_UpdatedDate\n    );\n\n    -- Obtener el ID del nuevo registro insertado en Sound\n    SET newSoundID = LAST_INSERT_ID();\n\n    -- Insertar en la tabla SoundsLabels\n    INSERT INTO SoundsLabels (SoundID_FK, LabelID_FK)\n    VALUES (newSoundID, p_LabelID);\nEND$$\n\nDELIMITER ;\n\n\n\n\n\n\n\n\n\n\n",
+    "options": {
+        "tabSize": 4,
+        "indentSize": 4,
+        "insertSpaces": true,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": {
+        "cursorState": [
+            {
+                "inSelectionMode": false,
+                "selectionStart": {
+                    "lineNumber": 187,
+                    "column": 1
+                },
+                "position": {
+                    "lineNumber": 187,
+                    "column": 1
+                }
+            }
+        ],
+        "viewState": {
+            "scrollLeft": 0,
+            "firstPosition": {
+                "lineNumber": 162,
+                "column": 1
+            },
+            "firstPositionDeltaTop": -15
+        },
+        "contributionsState": {
+            "editor.contrib.folding": {},
+            "editor.contrib.wordHighlighter": false
+        }
+    },
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 2,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 1,
+                            "resultId": "af43d1e5-48fa-42d5-a597-0863097d4c7a",
+                            "content": "OK, 0 records retrieved in 0.709ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 26
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 26,
+                            "length": 15
+                        },
+                        "contentStart": 27,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 3,
+                "end": 15,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "e51d255c-943a-45fe-d154-6e27d7e2fac6",
+                            "content": "OK, 0 records retrieved in 496.228ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 464
+                        },
+                        "contentStart": 50,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 464,
+                            "length": 1
+                        },
+                        "contentStart": 463,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 16,
+                "end": 29,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "99681ce9-4f34-41bf-dbb9-e9b5b657ec64",
+                            "content": "OK, 0 records retrieved in 585.01ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 462
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 462,
+                            "length": 1
+                        },
+                        "contentStart": 461,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 30,
+                "end": 44,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "dc828bde-85f3-4d4a-faa9-31344cd3d1a3",
+                            "content": "OK, 0 records retrieved in 1.0639622211456299s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 540
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 540,
+                            "length": 1
+                        },
+                        "contentStart": 539,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 45,
+                "end": 55,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "8cf2bacf-3796-4d9a-cace-238fe51cf7b0",
+                            "content": "OK, 0 records retrieved in 630.252ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 373
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 373,
+                            "length": 1
+                        },
+                        "contentStart": 372,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 56,
+                "end": 66,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "0318b982-72e7-44f8-d6f0-2a4df67b1a75",
+                            "content": "OK, 0 records retrieved in 663.44ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 377
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 377,
+                            "length": 1
+                        },
+                        "contentStart": 376,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 67,
+                "end": 71,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "c2be30ee-eebc-42f2-d067-2b64dd92e42d",
+                            "content": "OK, 0 records retrieved in 1.229722499847412s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 87
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 87,
+                            "length": 1
+                        },
+                        "contentStart": 86,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 72,
+                "end": 76,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 86
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 86,
+                            "length": 1
+                        },
+                        "contentStart": 85,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 77,
+                "end": 81,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "716f4bb7-fa23-4c41-f0c3-b88e64809342",
+                            "content": "OK, 0 records retrieved in 1.9097847938537598s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 164
+                        },
+                        "contentStart": 49,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 164,
+                            "length": 1
+                        },
+                        "contentStart": 163,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 82,
+                "end": 85,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "84b98546-a486-4f2f-d466-5a4463f7a6a2",
+                            "content": "OK, 0 records retrieved in 2.05489444732666s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 117
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 117,
+                            "length": 1
+                        },
+                        "contentStart": 116,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 86,
+                "end": 89,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "5781effa-1242-415d-f308-5f4a19922d09",
+                            "content": "OK, 0 records retrieved in 1.9869139194488525s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 115
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 115,
+                            "length": 1
+                        },
+                        "contentStart": 114,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 90,
+                "end": 93,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "f7493aea-4672-44eb-fdc3-c0a0d6122251",
+                            "content": "OK, 0 records retrieved in 2.1208066940307617s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 119
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 119,
+                            "length": 1
+                        },
+                        "contentStart": 118,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 94,
+                "end": 97,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "27c77f0a-22e3-4c42-a32c-dd74e3c1f62b",
+                            "content": "OK, 0 records retrieved in 1.865647315979004s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 114
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 114,
+                            "length": 1
+                        },
+                        "contentStart": 113,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 98,
+                "end": 101,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "6f04900e-59d1-469a-86c6-108757ae0196",
+                            "content": "OK, 0 records retrieved in 1.7429797649383545s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 117
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 117,
+                            "length": 1
+                        },
+                        "contentStart": 116,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 102,
+                "end": 105,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "c108830d-7bd5-474f-b654-7285fd1428cd",
+                            "content": "OK, 0 records retrieved in 2.0517425537109375s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 115
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 115,
+                            "length": 1
+                        },
+                        "contentStart": 114,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 106,
+                "end": 109,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 0,
+                            "resultId": "27782f33-43fd-437d-d55a-8a205db03bc7",
+                            "content": "OK, 0 records retrieved in 1.4315645694732666s"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 116
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 116,
+                            "length": 1
+                        },
+                        "contentStart": 115,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 110,
+                "end": 121,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "211ff237-edbf-4c32-f42f-b0fb481c7807"
+                    ]
+                },
+                "currentHeight": 259.75,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 246
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 246,
+                            "length": 1
+                        },
+                        "contentStart": 245,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
+                    "resultId": "211ff237-edbf-4c32-f42f-b0fb481c7807",
+                    "rows": [
+                        {
+                            "0": "LabelID_FK_SoundsLabels",
+                            "1": "SoundsLabels",
+                            "2": "LabelID_FK",
+                            "3": "Labels",
+                            "4": "LabelID"
+                        },
+                        {
+                            "0": "SoundID_FK_SoundsLabels",
+                            "1": "SoundsLabels",
+                            "2": "SoundID_FK",
+                            "3": "Sound",
+                            "4": "SoundID"
+                        },
+                        {
+                            "0": "SoundID_FK_UserDownloads",
+                            "1": "UserDownloads",
+                            "2": "SoundID_FK",
+                            "3": "Sound",
+                            "4": "SoundID"
+                        },
+                        {
+                            "0": "UserID_FK_UserDownloads",
+                            "1": "UserDownloads",
+                            "2": "UserID_FK",
+                            "3": "User",
+                            "4": "UserID"
+                        },
+                        {
+                            "0": "SoundID_FK_UserPurchases",
+                            "1": "UserPurchases",
+                            "2": "SoundID_FK",
+                            "3": "Sound",
+                            "4": "SoundID"
+                        },
+                        {
+                            "0": "UserID_FK_UserPurchases",
+                            "1": "UserPurchases",
+                            "2": "UserID_FK",
+                            "3": "User",
+                            "4": "UserID"
+                        },
+                        {
+                            "0": "SoundID_FK_UserSoundStock",
+                            "1": "UserSoundStock",
+                            "2": "SoundID_FK",
+                            "3": "Sound",
+                            "4": "SoundID"
+                        },
+                        {
+                            "0": "UserID_FK_UserSoundStock",
+                            "1": "UserSoundStock",
+                            "2": "UserID_FK",
+                            "3": "User",
+                            "4": "UserID"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "CONSTRAINT_NAME",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "TABLE_NAME",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "COLUMN_NAME",
+                            "field": "2",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "REFERENCED_TABLE_NAME",
+                            "field": "3",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "REFERENCED_COLUMN_NAME",
+                            "field": "4",
+                            "dataType": {
+                                "type": 17
+                            }
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 8 records retrieved in 3.352ms"
+                    },
+                    "totalRowCount": 8,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "SELECT \n    CONSTRAINT_NAME, \n    TABLE_NAME, \n    COLUMN_NAME, \n    REFERENCED_TABLE_NAME, \n    REFERENCED_COLUMN_NAME\nFROM \n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE\nWHERE \n    TABLE_SCHEMA = 'TuneStock'\n    AND REFERENCED_TABLE_NAME IS NOT NULL"
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 122,
+                "end": 122,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 123,
+                "end": 132,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 1,
+                            "resultId": "c63c1214-4d4e-453f-9239-d5f1f93b0839",
+                            "content": "OK, 0 records retrieved in 229.418ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": "$$",
+                        "span": {
+                            "start": 0,
+                            "length": 12
+                        },
+                        "contentStart": 0,
+                        "state": 4
+                    },
+                    {
+                        "delimiter": "$$",
+                        "span": {
+                            "start": 12,
+                            "length": 194
+                        },
+                        "contentStart": 13,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 206,
+                            "length": 13
+                        },
+                        "contentStart": 208,
+                        "state": 4
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 133,
+                "end": 134,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "057becc4-aab8-4a84-da5d-b5ad7b3cc47c"
+                    ]
+                },
+                "currentHeight": 36,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 14
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 14,
+                            "length": 1
+                        },
+                        "contentStart": 13,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
+                    "resultId": "057becc4-aab8-4a84-da5d-b5ad7b3cc47c",
+                    "rows": [
+                        {
+                            "0": "TRG_INSERT_UserPurchases",
+                            "1": "INSERT",
+                            "2": "UserPurchases",
+                            "3": "BEGIN\n    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)\n    VALUES (NEW.UserID_FK, NEW.SoundID_FK);\nEND",
+                            "4": "AFTER",
+                            "5": "2024-04-16 09:50:19.570000",
+                            "6": "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION",
+                            "7": "starboy@localhost",
+                            "8": "utf8mb4",
+                            "9": "utf8mb4_0900_ai_ci",
+                            "10": "utf8mb4_0900_ai_ci"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Trigger",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Event",
+                            "field": "1",
+                            "dataType": {
+                                "type": 46
+                            }
+                        },
+                        {
+                            "title": "Table",
+                            "field": "2",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Statement",
+                            "field": "3",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Timing",
+                            "field": "4",
+                            "dataType": {
+                                "type": 46
+                            }
+                        },
+                        {
+                            "title": "Created",
+                            "field": "5",
+                            "dataType": {
+                                "type": 26
+                            }
+                        },
+                        {
+                            "title": "sql_mode",
+                            "field": "6",
+                            "dataType": {
+                                "type": 47
+                            }
+                        },
+                        {
+                            "title": "Definer",
+                            "field": "7",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "character_set_client",
+                            "field": "8",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "collation_connection",
+                            "field": "9",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Database Collation",
+                            "field": "10",
+                            "dataType": {
+                                "type": 17
+                            }
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 3.494ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "SHOW TRIGGERS"
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 135,
+                "end": 136,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "386b1fe3-8061-4637-f434-25c83eecb17b"
+                    ]
+                },
+                "currentHeight": 36,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 15
+                        },
+                        "contentStart": 1,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 15,
+                            "length": 1
+                        },
+                        "contentStart": 14,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
+                    "resultId": "386b1fe3-8061-4637-f434-25c83eecb17b",
+                    "rows": [
+                        {
+                            "0": "SoundID",
+                            "1": "int",
+                            "2": "NO",
+                            "3": "PRI",
+                            "4": null,
+                            "5": "auto_increment"
+                        },
+                        {
+                            "0": "UserID",
+                            "1": "int",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "SoundName",
+                            "1": "varchar(50)",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "File",
+                            "1": "varchar(100)",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "IsPremiun",
+                            "1": "tinyint(1)",
+                            "2": "YES",
+                            "3": "",
+                            "4": "0",
+                            "5": ""
+                        },
+                        {
+                            "0": "Price",
+                            "1": "double",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "IsDeleted",
+                            "1": "tinyint(1)",
+                            "2": "YES",
+                            "3": "",
+                            "4": "0",
+                            "5": ""
+                        },
+                        {
+                            "0": "CreatedBy",
+                            "1": "varchar(50)",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "CreatedDate",
+                            "1": "datetime",
+                            "2": "NO",
+                            "3": "",
+                            "4": "CURRENT_TIMESTAMP",
+                            "5": "DEFAULT_GENERATED"
+                        },
+                        {
+                            "0": "UpdatedBy",
+                            "1": "varchar(50)",
+                            "2": "NO",
+                            "3": "",
+                            "4": null,
+                            "5": ""
+                        },
+                        {
+                            "0": "UpdatedDate",
+                            "1": "datetime",
+                            "2": "NO",
+                            "3": "",
+                            "4": "CURRENT_TIMESTAMP",
+                            "5": "DEFAULT_GENERATED"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Field",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Type",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Null",
+                            "field": "2",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Key",
+                            "field": "3",
+                            "dataType": {
+                                "type": 46
+                            }
+                        },
+                        {
+                            "title": "Default",
+                            "field": "4",
+                            "dataType": {
+                                "type": 17
+                            }
+                        },
+                        {
+                            "title": "Extra",
+                            "field": "5",
+                            "dataType": {
+                                "type": 17
+                            }
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 11 records retrieved in 4.149ms"
+                    },
+                    "totalRowCount": 11,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "DESCRIBE Sound"
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 137,
+                "end": 186,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 4,
+                            "index": 1,
+                            "resultId": "6f88ac5d-567d-4cdb-efdb-14062e6a45f0",
+                            "content": "OK, 0 records retrieved in 219.271ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "statements": [
+                    {
+                        "delimiter": "$$",
+                        "span": {
+                            "start": 0,
+                            "length": 12
+                        },
+                        "contentStart": 0,
+                        "state": 4
+                    },
+                    {
+                        "delimiter": "$$",
+                        "span": {
+                            "start": 12,
+                            "length": 1052
+                        },
+                        "contentStart": 14,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1064,
+                            "length": 13
+                        },
+                        "contentStart": 1066,
+                        "state": 4
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 187,
+                "end": 187,
+                "language": "mysql",
+                "currentHeight": 36,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 188,
+                "end": 188,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 189,
+                "end": 189,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 190,
+                "end": 190,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 191,
+                "end": 191,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 192,
+                "end": 192,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 193,
+                "end": 193,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 194,
+                "end": 194,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 195,
+                "end": 195,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 196,
+                "end": 196,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 197,
+                "end": 197,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        }
+    ]
+}
