@@ -190,7 +190,7 @@ TuneStock$ dotnet build
 
 ### III.- Desarrollo del proyecto Core.
 
-Primeramente, hay que instalar los paquetes NuGet necesarios para el desarrollo de este proyecto, los cuales son **Dapper** y **Dapper.contrib**, donde Dapper es un micro-ORM que nos permitirá mapear nuestra base de datos dentro de dotnet y Dapper.contrib agrega funcionalidades asíncronas a nuestra instalación de Dapper, de esta manera manejaremos de mejor forma las operaciones que requieran conexión con la base de datos, podremos hacerlo de la siguiente manera:
+Primeramente, hay que instalar los paquetes NuGet necesarios para el desarrollo de este proyecto, los cuales son **Dapper**, **Dapper.contrib** y **MySqlConnector**, donde Dapper es un micro-ORM que nos permitirá mapear nuestra base de datos dentro de dotnet, Dapper.contrib agrega funcionalidades asíncronas a nuestra instalación de Dapper y MySqlConnector para crear la conexión a nuestra base de datos, de esta manera manejaremos de mejor forma las operaciones que requieran conexión con la base de datos, podremos hacerlo de la siguiente manera:
 
 ```bash
 TuneStock/tunestock.api$ dotnet add package Dapper
@@ -199,7 +199,7 @@ TuneStock/tunestock.api$ dotnet add package Dapper.Contrib
 
 Ahora dentro proyecto Core, manejaremos todas las clases que podrán ser utilizadas en nuestro programa.
 
-#### Tunestock.core.entities.
+#### 1.- Tunestock.core.entities.
 
 Aquí se encontrarán todas las entidades u objetos que serán participes en nuestro proyecto, las cuales, debido a la lógica de la base de datos son las siguientes:
 
@@ -328,5 +328,82 @@ public class UserPurchase : EntityBase {
 
 }
 ```
+<br>
 
+#### 2.- Tunestock.api.dataAccess.
 
+En este momento ya tenemos nuestras entidades creadas, por lo tanto podemos proceder a la conexión con la base de datos de la siguiente forma.
+
+<p align="center">
+    <img src="DataAccess.png" alt="" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+</p>
+
+##### IDbContext.cs
+
+```Csharp
+//Importamos el paquete que nos permita usar DbConnection
+using System.Data.Common;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.api.dataAccess.interfaces;
+
+public interface IDbContext{
+    //Nos devolverá la conexión a la base de datos
+    DbConnection Connection { get; }
+
+}
+```
+
+##### DbContext.cs
+
+Hay que aclarar que para esta clase, es necesario utilizar credenciales de acceso a la base de datos, por lo tanto las almacenaremos en appsettings.json de la siguiente manera:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection" : "Server=localhost;
+      Database=TuneStock;
+        Uid=starboy;
+          Pwd=starboyc00l;"
+  },
+  "AllowedHosts": "*"
+}
+```
+
+```Csharp
+//Importamos el paquete que nos permita manejar Connections
+using System.Data.Common;
+//Importamos el paquete que contiene nuestra interfaz
+using tunestock.api.dataAccess.interfaces;
+//Importamos el conector de MySQL que instalamos previamente
+using MySqlConnector;
+
+public class DbContext : IDbContext{
+
+    private readonly IConfiguration _config;
+    public DbContext(IConfiguration config){
+        _config = config;
+    }
+    
+    //Esta será nuestra variable de conexión
+    private MySqlConnection _connection; 
+
+    //Devolverá la conexión a la base de datos
+    public DbConnection Connection{
+        get{
+            if(_connection == null){
+                //DefaultConnection está definido en appsettgins.json
+                _connection = new MySqlConnection(
+                    _config.GetConnectionString("DefaultConnection"));
+            }
+            return _connection;
+        }
+    }
+}
+```

@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[7.0.16, )"
             },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.3.6, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
