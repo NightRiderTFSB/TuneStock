@@ -72,9 +72,9 @@ A continuación se especifican las entidades necesarias:
 
 
 
-| Users           | Sounds            | Purchases           | Downloads         | Labels            |
-|-----------------|-------------------|---------------------|-------------------|-------------------|
-| UserID Username Email Password IsDeleted CreatedBy CreatedDate UpdatedBy UpdatedDate | SoundID UserID    SoundName File      UploadDate IsPremium Price     IsDeleted CreatedBy UpdatedBy UpdatedBy | PurchaseID PurchaseDate SoundPrice   PaymentStatus PaymentMethod UserID       SoundID      CreatedBy    CreatedDate  UpdatedBy    UpdatedDate  | DownloadID  SoundID     UserID      DownloadDate IsDeleted   CreatedBy   CreatedDate UpdatedBy   UpdatedDate | LabelID     Label       Description IsDeleted   CreatedBy   CreatedDate UpdatedBy   UpdatedDate |
+| Users                                                                                | Sounds                                                                                                       | Purchases                                                                                                                                     | Downloads                                                                                                    | Labels                                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| UserID Username Email Password IsDeleted CreatedBy CreatedDate UpdatedBy UpdatedDate | SoundID UserID    SoundName File      UploadDate IsPremium Price     IsDeleted CreatedBy UpdatedBy UpdatedBy | PurchaseID PurchaseDate SoundPrice   PaymentStatus PaymentMethod UserID       SoundID      CreatedBy    CreatedDate  UpdatedBy    UpdatedDate | DownloadID  SoundID     UserID      DownloadDate IsDeleted   CreatedBy   CreatedDate UpdatedBy   UpdatedDate | LabelID     Label       Description IsDeleted   CreatedBy   CreatedDate UpdatedBy   UpdatedDate |
 
 Por ende, el diagrama de base de datos queda de la siguiente forma:
 
@@ -189,5 +189,137 @@ TuneStock$ dotnet build
 <br>
 
 ### III.- Desarrollo del proyecto Core.
+
+Dentro proyecto Core, manejaremos todas las clases que podrán ser utilizadas en nuestro programa.
+
+#### Tunestock.core.entities.
+
+Aquí se encontrarán todas las entidades u objetos que serán participes en nuestro proyecto, las cuales, debido a la lógica de la base de datos son las siguientes:
+
+<p align="center">
+    <img src="Entities.png" alt="" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+</p>
+
+##### ¿Por qué no incluimos dos tablas?
+
+Las tablas de la base de datos llamadas *UserSoundStock* y *SoundsLabels* no serán incluidas en el paquete de entities porque no cumplen las cualidades necesarias para ser una entidad completa, es decir, que solo son tablas para mantener una relación, por lo tanto no son indispensables para el programa, pues su uso puede ser a través de un trigger para *UserSoundStock* y un stored procedure para *SoundsLabels*.
+
+##### 1.- EntityBase.cs
+
+```Csharp
+//Nombre del paquete al que pertenece esta clase
+namespace tunestock.core.entities;
+
+public abstract class EntityBase{
+
+    /*Esta clase permitirá construir objetos con esta clase "base"
+    que nos proporciona los siguientes atributos base*/
+
+    public int ID { get; set; }
+
+    public bool IsDeleted { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public string? UpdatedBy { get; set; }
+
+    public DateTime UpdatedDate { get; set; }
+
+}
+```
+
+##### 2.- Label.cs:
+
+```Csharp
+//Importamos el decorador para establecer la tabla SQL objetivo
+using System.ComponentModel.DataAnnotations.Schema;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.core.entities;
+
+[Table("Labels")] //Apuntamos a la tabla objetivo en la base de datos
+public class Label : EntityBase {
+
+    public string? Labelname { get; set; }
+
+    public string? Description { get; set; }
+
+}
+```
+
+##### 3.- User.cs:
+
+```Csharp
+//Importamos el decorador para establecer la tabla SQL objetivo
+using System.ComponentModel.DataAnnotations.Schema;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.core.entities;
+
+
+[Table("User")] //Apuntamos a la tabla correspondiente
+public class User : EntityBase {
+    /*Heredamos los atributos base*/
+
+    public string? Username { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? Password { get; set; }
+
+}
+```
+
+##### 4.- UserDownload.cs:
+
+```Csharp
+//Importamos el decorador para establecer la tabla SQL objetivo
+using System.ComponentModel.DataAnnotations.Schema;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.core.entities;
+
+[Table("UserDownloads")] //Apuntamos a la tabla correspondiente
+public class UserDownload {
+    
+    public int ID { get; set; }
+
+    public int SoundID_FK { get; set; }
+    
+    public int UserID_FK { get; set; }
+
+    public DateTime DownloadedDate { get; set; }
+
+}
+```
+
+##### 5.- UserPurchase.cs:
+
+```Csharp
+//Importamos el decorador para establecer la tabla SQL objetivo
+using System.ComponentModel.DataAnnotations.Schema;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.core.entities;
+
+[Table("UserPurchases")] //Apuntamos a la tabla correspondiente
+public class UserPurchase : EntityBase {
+
+    public DateTime PurchasedDate { get; set; }
+
+    public double SoundPrice { get; set; }
+
+    public bool PaymentStatus { get; set; }
+
+    public string? PaymentMethod { get; set; }
+
+    public int UserID_FK { get; set; }
+
+    public int SoundID_FK { get; set; }
+
+}
+```
 
 

@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tunestock.core.entities;
 
 
-[Table("User")]
+[Table("User")] //Apuntamos a la tabla correspondiente
 public class User : EntityBase {
     /*Heredamos los atributos base*/
 
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
 }

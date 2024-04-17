@@ -2,7 +2,7 @@
     "type": "MySQLNotebook",
     "version": "1.0",
     "caption": "DB Notebook",
-    "content": "CREATE DATABASE TuneStock;\nUSE TuneStock;\n-- Tables ---------------------------------------\nCREATE TABLE User(\n    UserID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Username VARCHAR(50) NOT NULL,\n    Email VARCHAR(50) NOT NULL,\n    Password VARCHAR(20) NOT NULL,\n    IsDeleted BOOLEAN NOT NULL DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE Sound(\n    SoundID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    UserID INT NOT NULL,\n    SoundName VARCHAR(50) NOT NULL,\n    File VARCHAR(100) NOT NULL,\n    IsPremiun BOOLEAN DEFAULT FALSE,\n    Price DOUBLE NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserPurchases(\n    PurchaseID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    PurchasedDate DATETIME DEFAULT CURRENT_TIMESTAMP,\n    SoundPrice DOUBLE NOT NULL,\n    PaymentStatus BOOLEAN DEFAULT FALSE,\n    PaymentMethod VARCHAR(20) NOT NULL,\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserDownloads(\n    DownloadID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    SoundID_FK INT NOT NULL,\n    UserID_FK INT NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE Labels(\n    LabelID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Label VARCHAR(50) NOT NULL,\n    Description VARCHAR(100) NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserSoundStock(\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL\n);\n\nCREATE TABLE SoundsLabels(\n    SoundID_FK INT NOT NULL,\n    LabelID_FK INT NOT NULL\n);\n\n-- Foreign Keys --------------------------------\nALTER TABLE UserDownloads \nADD CONSTRAINT UserID_FK_UserDownloads \nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserDownloads\nADD CONSTRAINT SoundID_FK_UserDownloads\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT UserID_FK_UserSoundStock\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT SoundID_FK_UserSoundStock\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserPurchases \nADD CONSTRAINT UserID_FK_UserPurchases\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserPurchases\nADD CONSTRAINT SoundID_FK_UserPurchases\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT SoundID_FK_SoundsLabels\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT LabelID_FK_SoundsLabels\nFOREIGN KEY (LabelID_FK) REFERENCES Labels(LabelID);\n\nSELECT \n    CONSTRAINT_NAME, \n    TABLE_NAME, \n    COLUMN_NAME, \n    REFERENCED_TABLE_NAME, \n    REFERENCED_COLUMN_NAME\nFROM \n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE\nWHERE \n    TABLE_SCHEMA = 'TuneStock'\n    AND REFERENCED_TABLE_NAME IS NOT NULL;\n\n\nDELIMITER $$\nCREATE TRIGGER TRG_INSERT_UserPurchases\nAFTER INSERT ON UserPurchases\nFOR EACH ROW\nBEGIN\n    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)\n    VALUES (NEW.UserID_FK, NEW.SoundID_FK);\nEND$$\n\nDELIMITER ;\nSHOW TRIGGERS;\n\nDESCRIBE Sound;\n\nDELIMITER $$\n\nCREATE PROCEDURE InsertSoundAndLabel(\n    IN p_UserID INT, \n    IN p_SoundName VARCHAR(50),\n    IN p_File VARCHAR(100),\n    IN p_IsPremium BOOLEAN,\n    IN p_Price DOUBLE,\n    IN p_IsDeleted BOOLEAN,\n    IN p_CreatedBy VARCHAR(50),\n    IN p_CreatedDate DATETIME,\n    IN p_UpdatedBy VARCHAR(50),\n    IN p_UpdatedDate DATETIME,\n    IN p_LabelID INT\n    )\nBEGIN\n    DECLARE newSoundID INT;\n\n    -- Insertar en la tabla Sound\n    INSERT INTO Sound(\n        SoundName,\n        File,\n        IsPremium,\n        Price,\n        IsDeleted,\n        CreatedBy,\n        CreatedDate,\n        UpdatedBy,\n        UpdatedDate\n    ) VALUES (\n        p_SoundName,\n        p_File,\n        p_IsPremium,\n        p_Price,\n        p_IsDeleted,\n        p_CreatedBy,\n        p_CreatedDate,\n        p_UpdatedBy,\n        p_UpdatedDate\n    );\n\n    -- Obtener el ID del nuevo registro insertado en Sound\n    SET newSoundID = LAST_INSERT_ID();\n\n    -- Insertar en la tabla SoundsLabels\n    INSERT INTO SoundsLabels (SoundID_FK, LabelID_FK)\n    VALUES (newSoundID, p_LabelID);\nEND$$\n\nDELIMITER ;\n\n\n\n\n\n\n\n\n\n\n",
+    "content": "CREATE DATABASE TuneStock;\nUSE TuneStock; \n-- Tables ---------------------------------------\nCREATE TABLE User(\n    UserID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Username VARCHAR(50) NOT NULL,\n    Email VARCHAR(50) NOT NULL,\n    Password VARCHAR(20) NOT NULL,\n    IsDeleted BOOLEAN NOT NULL DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n \nCREATE TABLE Sound(\n    SoundID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    UserID INT NOT NULL,\n    SoundName VARCHAR(50) NOT NULL,\n    File VARCHAR(100) NOT NULL,\n    IsPremiun BOOLEAN DEFAULT FALSE,\n    Price DOUBLE NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserPurchases(\n    PurchaseID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    PurchasedDate DATETIME DEFAULT CURRENT_TIMESTAMP,\n    SoundPrice DOUBLE NOT NULL,\n    PaymentStatus BOOLEAN DEFAULT FALSE,\n    PaymentMethod VARCHAR(20) NOT NULL,\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserDownloads(\n    DownloadID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    SoundID_FK INT NOT NULL,\n    UserID_FK INT NOT NULL,\n    DownloadedDate DATETIME DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE Labels(\n    LabelID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n    Label VARCHAR(50) NOT NULL,\n    Description VARCHAR(100) NOT NULL,\n    IsDeleted BOOLEAN DEFAULT FALSE,\n    CreatedBy VARCHAR(50) NOT NULL,\n    CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UpdatedBy VARCHAR(50) NOT NULL,\n    UpdatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE UserSoundStock(\n    UserID_FK INT NOT NULL,\n    SoundID_FK INT NOT NULL\n);\n\nCREATE TABLE SoundsLabels(\n    SoundID_FK INT NOT NULL,\n    LabelID_FK INT NOT NULL\n);\n\n-- Foreign Keys --------------------------------\nALTER TABLE UserDownloads \nADD CONSTRAINT UserID_FK_UserDownloads \nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserDownloads\nADD CONSTRAINT SoundID_FK_UserDownloads\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT UserID_FK_UserSoundStock\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserSoundStock\nADD CONSTRAINT SoundID_FK_UserSoundStock\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE UserPurchases \nADD CONSTRAINT UserID_FK_UserPurchases\nFOREIGN KEY (UserID_FK) REFERENCES User(UserID);\n\nALTER TABLE UserPurchases\nADD CONSTRAINT SoundID_FK_UserPurchases\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT SoundID_FK_SoundsLabels\nFOREIGN KEY (SoundID_FK) REFERENCES Sound(SoundID);\n\nALTER TABLE SoundsLabels\nADD CONSTRAINT LabelID_FK_SoundsLabels\nFOREIGN KEY (LabelID_FK) REFERENCES Labels(LabelID);\n\nSELECT \n    CONSTRAINT_NAME, \n    TABLE_NAME, \n    COLUMN_NAME, \n    REFERENCED_TABLE_NAME, \n    REFERENCED_COLUMN_NAME\nFROM \n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE\nWHERE \n    TABLE_SCHEMA = 'TuneStock'\n    AND REFERENCED_TABLE_NAME IS NOT NULL;  \n\n\nDELIMITER $$\nCREATE TRIGGER TRG_INSERT_UserPurchases\nAFTER INSERT ON UserPurchases\nFOR EACH ROW\nBEGIN\n    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)\n    VALUES (NEW.UserID_FK, NEW.SoundID_FK);\nEND$$\n\nDELIMITER ; \n\nDELIMITER $$\n\nCREATE PROCEDURE InsertSoundAndLabel(\n    IN p_UserID INT, \n    IN p_SoundName VARCHAR(50),\n    IN p_File VARCHAR(100),\n    IN p_IsPremium BOOLEAN,\n    IN p_Price DOUBLE,\n    IN p_IsDeleted BOOLEAN,\n    IN p_CreatedBy VARCHAR(50),\n    IN p_CreatedDate DATETIME,\n    IN p_UpdatedBy VARCHAR(50),\n    IN p_UpdatedDate DATETIME,\n    IN p_LabelID INT\n    )\nBEGIN\n    DECLARE newSoundID INT;\n\n    -- Insertar en la tabla Sound\n    INSERT INTO Sound(\n        SoundName,\n        File,\n        IsPremium,\n        Price,\n        IsDeleted,\n        CreatedBy,\n        CreatedDate,\n        UpdatedBy,\n        UpdatedDate\n    ) VALUES (\n        p_SoundName,\n        p_File,\n        p_IsPremium,\n        p_Price,\n        p_IsDeleted,\n        p_CreatedBy,\n        p_CreatedDate,\n        p_UpdatedBy,\n        p_UpdatedDate\n    );\n\n    -- Obtener el ID del nuevo registro insertado en Sound\n    SET newSoundID = LAST_INSERT_ID();\n\n    -- Insertar en la tabla SoundsLabels\n    INSERT INTO SoundsLabels (SoundID_FK, LabelID_FK)\n    VALUES (newSoundID, p_LabelID);\nEND$$\n\nDELIMITER ;\n\n\n\n\n\n\n",
     "options": {
         "tabSize": 4,
         "indentSize": 4,
@@ -15,22 +15,22 @@
             {
                 "inSelectionMode": false,
                 "selectionStart": {
-                    "lineNumber": 187,
-                    "column": 1
+                    "lineNumber": 2,
+                    "column": 16
                 },
                 "position": {
-                    "lineNumber": 187,
-                    "column": 1
+                    "lineNumber": 2,
+                    "column": 16
                 }
             }
         ],
         "viewState": {
             "scrollLeft": 0,
             "firstPosition": {
-                "lineNumber": 162,
+                "lineNumber": 169,
                 "column": 1
             },
-            "firstPositionDeltaTop": -15
+            "firstPositionDeltaTop": -1
         },
         "contributionsState": {
             "editor.contrib.folding": {},
@@ -73,6 +73,15 @@
                         },
                         "contentStart": 27,
                         "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 41,
+                            "length": 1
+                        },
+                        "contentStart": 40,
+                        "state": 3
                     }
                 ]
             },
@@ -109,7 +118,7 @@
                         "delimiter": ";",
                         "span": {
                             "start": 464,
-                            "length": 1
+                            "length": 2
                         },
                         "contentStart": 463,
                         "state": 3
@@ -201,7 +210,7 @@
         {
             "state": {
                 "start": 45,
-                "end": 55,
+                "end": 51,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -220,7 +229,7 @@
                         "delimiter": ";",
                         "span": {
                             "start": 0,
-                            "length": 373
+                            "length": 197
                         },
                         "contentStart": 0,
                         "state": 0
@@ -228,10 +237,10 @@
                     {
                         "delimiter": ";",
                         "span": {
-                            "start": 373,
+                            "start": 197,
                             "length": 1
                         },
-                        "contentStart": 372,
+                        "contentStart": 196,
                         "state": 3
                     }
                 ]
@@ -240,8 +249,8 @@
         },
         {
             "state": {
-                "start": 56,
-                "end": 66,
+                "start": 52,
+                "end": 62,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -280,8 +289,8 @@
         },
         {
             "state": {
-                "start": 67,
-                "end": 71,
+                "start": 63,
+                "end": 67,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -320,8 +329,8 @@
         },
         {
             "state": {
-                "start": 72,
-                "end": 76,
+                "start": 68,
+                "end": 72,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -349,8 +358,8 @@
         },
         {
             "state": {
-                "start": 77,
-                "end": 81,
+                "start": 73,
+                "end": 77,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -389,8 +398,8 @@
         },
         {
             "state": {
-                "start": 82,
-                "end": 85,
+                "start": 78,
+                "end": 81,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -429,8 +438,8 @@
         },
         {
             "state": {
-                "start": 86,
-                "end": 89,
+                "start": 82,
+                "end": 85,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -469,8 +478,8 @@
         },
         {
             "state": {
-                "start": 90,
-                "end": 93,
+                "start": 86,
+                "end": 89,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -509,8 +518,8 @@
         },
         {
             "state": {
-                "start": 94,
-                "end": 97,
+                "start": 90,
+                "end": 93,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -549,8 +558,8 @@
         },
         {
             "state": {
-                "start": 98,
-                "end": 101,
+                "start": 94,
+                "end": 97,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -589,8 +598,8 @@
         },
         {
             "state": {
-                "start": 102,
-                "end": 105,
+                "start": 98,
+                "end": 101,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -629,8 +638,8 @@
         },
         {
             "state": {
-                "start": 106,
-                "end": 109,
+                "start": 102,
+                "end": 105,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -669,13 +678,13 @@
         },
         {
             "state": {
-                "start": 110,
-                "end": 121,
+                "start": 106,
+                "end": 117,
                 "language": "mysql",
                 "result": {
                     "type": "resultIds",
                     "list": [
-                        "211ff237-edbf-4c32-f42f-b0fb481c7807"
+                        "f3956014-161a-4950-fd22-7700f775297d"
                     ]
                 },
                 "currentHeight": 259.75,
@@ -693,7 +702,7 @@
                         "delimiter": ";",
                         "span": {
                             "start": 246,
-                            "length": 1
+                            "length": 3
                         },
                         "contentStart": 245,
                         "state": 3
@@ -702,8 +711,8 @@
             },
             "data": [
                 {
-                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
-                    "resultId": "211ff237-edbf-4c32-f42f-b0fb481c7807",
+                    "tabId": "a53f3625-0967-42fb-e3e1-3cf648e45568",
+                    "resultId": "f3956014-161a-4950-fd22-7700f775297d",
                     "rows": [
                         {
                             "0": "LabelID_FK_SoundsLabels",
@@ -812,8 +821,8 @@
         },
         {
             "state": {
-                "start": 122,
-                "end": 122,
+                "start": 118,
+                "end": 118,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -832,21 +841,10 @@
         },
         {
             "state": {
-                "start": 123,
-                "end": 132,
+                "start": 119,
+                "end": 129,
                 "language": "mysql",
-                "result": {
-                    "type": "text",
-                    "text": [
-                        {
-                            "type": 4,
-                            "index": 1,
-                            "resultId": "c63c1214-4d4e-453f-9239-d5f1f93b0839",
-                            "content": "OK, 0 records retrieved in 229.418ms"
-                        }
-                    ]
-                },
-                "currentHeight": 28,
+                "currentHeight": 180,
                 "statements": [
                     {
                         "delimiter": "$$",
@@ -874,6 +872,15 @@
                         },
                         "contentStart": 208,
                         "state": 4
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 219,
+                            "length": 2
+                        },
+                        "contentStart": 218,
+                        "state": 3
                     }
                 ]
             },
@@ -881,332 +888,8 @@
         },
         {
             "state": {
-                "start": 133,
-                "end": 134,
-                "language": "mysql",
-                "result": {
-                    "type": "resultIds",
-                    "list": [
-                        "057becc4-aab8-4a84-da5d-b5ad7b3cc47c"
-                    ]
-                },
-                "currentHeight": 36,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 14
-                        },
-                        "contentStart": 0,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 14,
-                            "length": 1
-                        },
-                        "contentStart": 13,
-                        "state": 3
-                    }
-                ]
-            },
-            "data": [
-                {
-                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
-                    "resultId": "057becc4-aab8-4a84-da5d-b5ad7b3cc47c",
-                    "rows": [
-                        {
-                            "0": "TRG_INSERT_UserPurchases",
-                            "1": "INSERT",
-                            "2": "UserPurchases",
-                            "3": "BEGIN\n    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)\n    VALUES (NEW.UserID_FK, NEW.SoundID_FK);\nEND",
-                            "4": "AFTER",
-                            "5": "2024-04-16 09:50:19.570000",
-                            "6": "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION",
-                            "7": "starboy@localhost",
-                            "8": "utf8mb4",
-                            "9": "utf8mb4_0900_ai_ci",
-                            "10": "utf8mb4_0900_ai_ci"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "title": "Trigger",
-                            "field": "0",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Event",
-                            "field": "1",
-                            "dataType": {
-                                "type": 46
-                            }
-                        },
-                        {
-                            "title": "Table",
-                            "field": "2",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Statement",
-                            "field": "3",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Timing",
-                            "field": "4",
-                            "dataType": {
-                                "type": 46
-                            }
-                        },
-                        {
-                            "title": "Created",
-                            "field": "5",
-                            "dataType": {
-                                "type": 26
-                            }
-                        },
-                        {
-                            "title": "sql_mode",
-                            "field": "6",
-                            "dataType": {
-                                "type": 47
-                            }
-                        },
-                        {
-                            "title": "Definer",
-                            "field": "7",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "character_set_client",
-                            "field": "8",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "collation_connection",
-                            "field": "9",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Database Collation",
-                            "field": "10",
-                            "dataType": {
-                                "type": 17
-                            }
-                        }
-                    ],
-                    "executionInfo": {
-                        "text": "OK, 1 record retrieved in 3.494ms"
-                    },
-                    "totalRowCount": 1,
-                    "hasMoreRows": false,
-                    "currentPage": 0,
-                    "index": 0,
-                    "sql": "SHOW TRIGGERS"
-                }
-            ]
-        },
-        {
-            "state": {
-                "start": 135,
-                "end": 136,
-                "language": "mysql",
-                "result": {
-                    "type": "resultIds",
-                    "list": [
-                        "386b1fe3-8061-4637-f434-25c83eecb17b"
-                    ]
-                },
-                "currentHeight": 36,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 15
-                        },
-                        "contentStart": 1,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 15,
-                            "length": 1
-                        },
-                        "contentStart": 14,
-                        "state": 3
-                    }
-                ]
-            },
-            "data": [
-                {
-                    "tabId": "1d44cc27-19ec-4e7b-bc0c-997ba0fa2251",
-                    "resultId": "386b1fe3-8061-4637-f434-25c83eecb17b",
-                    "rows": [
-                        {
-                            "0": "SoundID",
-                            "1": "int",
-                            "2": "NO",
-                            "3": "PRI",
-                            "4": null,
-                            "5": "auto_increment"
-                        },
-                        {
-                            "0": "UserID",
-                            "1": "int",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "SoundName",
-                            "1": "varchar(50)",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "File",
-                            "1": "varchar(100)",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "IsPremiun",
-                            "1": "tinyint(1)",
-                            "2": "YES",
-                            "3": "",
-                            "4": "0",
-                            "5": ""
-                        },
-                        {
-                            "0": "Price",
-                            "1": "double",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "IsDeleted",
-                            "1": "tinyint(1)",
-                            "2": "YES",
-                            "3": "",
-                            "4": "0",
-                            "5": ""
-                        },
-                        {
-                            "0": "CreatedBy",
-                            "1": "varchar(50)",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "CreatedDate",
-                            "1": "datetime",
-                            "2": "NO",
-                            "3": "",
-                            "4": "CURRENT_TIMESTAMP",
-                            "5": "DEFAULT_GENERATED"
-                        },
-                        {
-                            "0": "UpdatedBy",
-                            "1": "varchar(50)",
-                            "2": "NO",
-                            "3": "",
-                            "4": null,
-                            "5": ""
-                        },
-                        {
-                            "0": "UpdatedDate",
-                            "1": "datetime",
-                            "2": "NO",
-                            "3": "",
-                            "4": "CURRENT_TIMESTAMP",
-                            "5": "DEFAULT_GENERATED"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "title": "Field",
-                            "field": "0",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Type",
-                            "field": "1",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Null",
-                            "field": "2",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Key",
-                            "field": "3",
-                            "dataType": {
-                                "type": 46
-                            }
-                        },
-                        {
-                            "title": "Default",
-                            "field": "4",
-                            "dataType": {
-                                "type": 17
-                            }
-                        },
-                        {
-                            "title": "Extra",
-                            "field": "5",
-                            "dataType": {
-                                "type": 17
-                            }
-                        }
-                    ],
-                    "executionInfo": {
-                        "text": "OK, 11 records retrieved in 4.149ms"
-                    },
-                    "totalRowCount": 11,
-                    "hasMoreRows": false,
-                    "currentPage": 0,
-                    "index": 0,
-                    "sql": "DESCRIBE Sound"
-                }
-            ]
-        },
-        {
-            "state": {
-                "start": 137,
-                "end": 186,
+                "start": 130,
+                "end": 179,
                 "language": "mysql",
                 "result": {
                     "type": "text",
@@ -1254,10 +937,10 @@
         },
         {
             "state": {
-                "start": 187,
-                "end": 187,
+                "start": 180,
+                "end": 180,
                 "language": "mysql",
-                "currentHeight": 36,
+                "currentHeight": 28,
                 "statements": [
                     {
                         "delimiter": ";",
@@ -1265,7 +948,7 @@
                             "start": 0,
                             "length": 0
                         },
-                        "contentStart": -1,
+                        "contentStart": 0,
                         "state": 3
                     }
                 ]
@@ -1274,8 +957,8 @@
         },
         {
             "state": {
-                "start": 188,
-                "end": 188,
+                "start": 181,
+                "end": 181,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -1294,8 +977,8 @@
         },
         {
             "state": {
-                "start": 189,
-                "end": 189,
+                "start": 182,
+                "end": 182,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -1314,8 +997,8 @@
         },
         {
             "state": {
-                "start": 190,
-                "end": 190,
+                "start": 183,
+                "end": 183,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -1334,8 +1017,8 @@
         },
         {
             "state": {
-                "start": 191,
-                "end": 191,
+                "start": 184,
+                "end": 184,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -1354,8 +1037,8 @@
         },
         {
             "state": {
-                "start": 192,
-                "end": 192,
+                "start": 185,
+                "end": 185,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
@@ -1374,88 +1057,8 @@
         },
         {
             "state": {
-                "start": 193,
-                "end": 193,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 0
-                        },
-                        "contentStart": 0,
-                        "state": 0
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 194,
-                "end": 194,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 0
-                        },
-                        "contentStart": 0,
-                        "state": 0
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 195,
-                "end": 195,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 0
-                        },
-                        "contentStart": 0,
-                        "state": 0
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 196,
-                "end": 196,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 0
-                        },
-                        "contentStart": 0,
-                        "state": 0
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 197,
-                "end": 197,
+                "start": 186,
+                "end": 186,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [

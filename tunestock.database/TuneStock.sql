@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `Labels`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Labels` (
   `LabelID` int NOT NULL AUTO_INCREMENT,
-  `Label` varchar(50) NOT NULL,
+  `Labelname` varchar(50) NOT NULL,
   `Description` varchar(100) NOT NULL,
   `IsDeleted` tinyint(1) DEFAULT '0',
   `CreatedBy` varchar(50) NOT NULL,
@@ -143,11 +143,7 @@ CREATE TABLE `UserDownloads` (
   `DownloadID` int NOT NULL AUTO_INCREMENT,
   `SoundID_FK` int NOT NULL,
   `UserID_FK` int NOT NULL,
-  `IsDeleted` tinyint(1) DEFAULT '0',
-  `CreatedBy` varchar(50) NOT NULL,
-  `CreatedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `UpdatedBy` varchar(50) NOT NULL,
-  `UpdatedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DownloadedDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`DownloadID`),
   KEY `UserID_FK_UserDownloads` (`UserID_FK`),
   KEY `SoundID_FK_UserDownloads` (`SoundID_FK`),
@@ -201,6 +197,24 @@ LOCK TABLES `UserPurchases` WRITE;
 /*!40000 ALTER TABLE `UserPurchases` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserPurchases` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`starboy`@`localhost`*/ /*!50003 TRIGGER `TRG_INSERT_UserPurchases` AFTER INSERT ON `UserPurchases` FOR EACH ROW BEGIN
+    INSERT INTO UserSoundStock (UserID_FK, SoundID_FK)
+    VALUES (NEW.UserID_FK, NEW.SoundID_FK);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `UserSoundStock`
@@ -237,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-15 23:59:48
+-- Dump completed on 2024-04-17 10:16:21
