@@ -1,10 +1,10 @@
 //Nombre del paquete al que pertenece la clase
-namespace My.Tecnm.Ecommerce.Core.Http;
+namespace tunestock.core.http;
 
 public class Response<T>{
     //Esta clase nos permitirá manejar las respuestas del servidor
 
-    public T Data { get; set; }
+    public T? Data { get; set; }
     //T es un tipo génerico de datos, el cual puede 
     //variar en <int>, <stiring>, etc.
     public string Message { get; set;} = "";
