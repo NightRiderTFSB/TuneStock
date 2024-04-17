@@ -190,7 +190,14 @@ TuneStock$ dotnet build
 
 ### III.- Desarrollo del proyecto Core.
 
-Dentro proyecto Core, manejaremos todas las clases que podrán ser utilizadas en nuestro programa.
+Primeramente, hay que instalar los paquetes NuGet necesarios para el desarrollo de este proyecto, los cuales son **Dapper** y **Dapper.contrib**, donde Dapper es un micro-ORM que nos permitirá mapear nuestra base de datos dentro de dotnet y Dapper.contrib agrega funcionalidades asíncronas a nuestra instalación de Dapper, de esta manera manejaremos de mejor forma las operaciones que requieran conexión con la base de datos, podremos hacerlo de la siguiente manera:
+
+```bash
+TuneStock/tunestock.api$ dotnet add package Dapper
+TuneStock/tunestock.api$ dotnet add package Dapper.Contrib
+```
+
+Ahora dentro proyecto Core, manejaremos todas las clases que podrán ser utilizadas en nuestro programa.
 
 #### Tunestock.core.entities.
 
