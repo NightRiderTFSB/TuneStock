@@ -408,3 +408,116 @@ public class DbContext : IDbContext{
 }
 ```
 
+#### 3.- Tunestock.api.dto.
+
+Se plantea el uso de Data-Transfer-Objects para el manejo de los objetos dentro del programa, de esta manera evitando que el usuario visualicé todos los atributos de los objetos cuando estos sean consumidos por la aplicación de .NET. Se describen a continuación:
+
+##### 1.- DtoBase.cs
+
+```Csharp
+//Nombre del paquete al pertenece la clase
+namespace tunestock.api.dto;
+
+//Es una clase abstracta para poder ser implementada en otra clase
+public abstract class DtoBase{
+    
+    public int ID { get; set; }
+
+}
+```
+
+##### 2.- LabelDto.cs
+
+```Csharp
+//Importamos la entidad correspondiente
+using tunestock.core.entities;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.api.dto;
+
+public class LabelDto : DtoBase{
+    
+    public string? Labelname { get; set; }
+    public string? Description {get; set;}
+
+    public LabelDto(){
+        
+    }
+
+    public LabelDto(Label label){
+        ID = label.ID;
+        Labelname = label.Labelname;
+        Description = label.Description;
+    }
+
+}
+```
+
+##### UserDto.cs
+
+```Csharp
+//Importamos la entidad correspondiente
+using tunestock.core.entities;
+
+namespace tunestock.api.dto;
+
+public class UserDto: DtoBase{
+
+    public string? Username { get; set; }
+    public string? Email { get; set; }
+    public string? Password {get; set; }
+
+    public UserDto(){
+
+    }
+
+    public UserDto(User user){
+        ID = user.ID;
+        Username = user.Username;
+        Email = user.Email;
+        Password = user.Password;
+    }
+
+}
+```
+
+##### UserPurchaseDato.cs
+
+```Csharp
+//Importamos la entidad correspondiente
+using tunestock.core.entities;
+
+//Nombre del paquete al que pertenece la clase
+namespace tunestock.api.dto;
+
+public class UserPurchaseDto : DtoBase{
+
+    public DateTime PurchasedDate { get; set; }
+
+    public double SoundPrice { get; set; }
+
+    public bool PaymentStatus { get; set; }
+
+    public string? PaymentMethod { get; set; }
+
+    public int UserID_FK { get; set; }
+
+    public int SoundID_FK { get; set; }
+
+    public UserPurchaseDto(){
+
+    }
+
+    public UserPurchaseDto(UserPurchase userPurchase){
+        ID = userPurchase.ID;
+        PurchasedDate = userPurchase.PurchasedDate;
+        SoundPrice = userPurchase.SoundPrice;
+        PaymentStatus = userPurchase.PaymentStatus;
+        PaymentMethod = userPurchase.PaymentMethod;
+        UserID_FK = userPurchase.UserID_FK;
+        SoundID_FK = userPurchase.SoundID_FK;
+    }
+
+}
+```
+
