@@ -1,5 +1,7 @@
+//Importamos la entidad correspondiente
 using tunestock.core.entities;
 
+//Nombre del paquete al que pertenece la clase
 namespace tunestock.api.dto;
 
 public class LabelDto : DtoBase{
