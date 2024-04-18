@@ -6,19 +6,19 @@ namespace tunestock.api.repositories.interfaces;
 
 public interface IUserRepository{
     
-    //Método asíncrono para guardar label
-    Task<Label> SaveAsync(Label label);
+    //Método asíncrono para guardar user
+    Task<User> SaveAsync(User user);
 
-    //Método asíncrono para actualizar label
-    Task<Label> UpdateAsync(Label label);
+    //Método asíncrono para actualizar user
+    Task<User> UpdateAsync(User user);
 
-    //Método asíncrono para retornar todas las labels
-    Task<List<Label>> GetAllAsync();
+    //Método asíncrono para retornar todas las users
+    Task<List<User>> GetAllAsync();
 
-    //Método asíncrono para retornar una label por ID
-    Task<Label> GetByID(int ID);
+    //Método asíncrono para retornar una user por ID
+    Task<User> GetByID(int ID);
 
-    //Método asíncrono PARA eliminar una label
+    //Método asíncrono PARA eliminar una user
     Task<bool> DeleteAsync(int ID);
 
 }

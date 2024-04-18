@@ -6,19 +6,16 @@ namespace tunestock.api.repositories.interfaces;
 
 public interface IUserDownloadRepository{
 
-    //Método asíncrono para guardar label
-    Task<Label> SaveAsync(Label label);
+    //Método asíncrono para guardar user download
+    Task<UserDownload> SaveAsync(UserDownload userDownload);
 
-    //Método asíncrono para actualizar label
-    Task<Label> UpdateAsync(Label label);
+    //Método asíncrono para actualizar user download
+    Task<UserDownload> UpdateAsync(UserDownload userDownload);
 
-    //Método asíncrono para retornar todas las labels
-    Task<List<Label>> GetAllAsync();
+    //Método asíncrono para retornar todas las user downloads
+    Task<List<UserDownload>> GetAllAsync();
 
-    //Método asíncrono para retornar una label por ID
-    Task<Label> GetByID(int ID);
-
-    //Método asíncrono PARA eliminar una label
-    Task<bool> DeleteAsync(int ID);
+    //Método asíncrono para retornar una user download por ID
+    Task<UserDownload> GetByID(int ID);
 
 }
