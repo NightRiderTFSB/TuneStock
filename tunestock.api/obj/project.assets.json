@@ -168,6 +168,16 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "tunestock.core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/tunestock.core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/tunestock.core.dll": {}
+        }
       }
     }
   },
@@ -658,6 +668,11 @@
         "swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "tunestock.core/1.0.0": {
+      "type": "project",
+      "path": "../tunestock.core/tunestock.core.csproj",
+      "msbuildProject": "../tunestock.core/tunestock.core.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -666,7 +681,8 @@
       "Dapper.Contrib >= 2.0.78",
       "Microsoft.AspNetCore.OpenApi >= 7.0.16",
       "MySqlConnector >= 2.3.6",
-      "Swashbuckle.AspNetCore >= 6.5.0"
+      "Swashbuckle.AspNetCore >= 6.5.0",
+      "tunestock.core >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -693,7 +709,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj": {
+              "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

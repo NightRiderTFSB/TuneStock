@@ -9,9 +9,6 @@ public interface IUserDownloadRepository{
     //Método asíncrono para guardar user download
     Task<UserDownload> SaveAsync(UserDownload userDownload);
 
-    //Método asíncrono para actualizar user download
-    Task<UserDownload> UpdateAsync(UserDownload userDownload);
-
     //Método asíncrono para retornar todas las user downloads
     Task<List<UserDownload>> GetAllAsync();
 

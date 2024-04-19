@@ -31,3 +31,9 @@
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/obj/Debug/net7.0/tunestock.api.pdb
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/obj/Debug/net7.0/tunestock.api.genruntimeconfig.cache
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/obj/Debug/net7.0/ref/tunestock.api.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/Dapper.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/Dapper.Contrib.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/MySqlConnector.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/tunestock.core.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/tunestock.core.pdb

@@ -42,7 +42,7 @@ public class LabelRepository : ILabelRepository{
     public async Task<List<Label>> GetAllAsync(){
         
         try{
-            const string query = "SELECT * FROM Label WHERE IsDeleted = 0";
+            const string query = "SELECT * FROM Labels WHERE IsDeleted = 0";
             var labels = await _dbContext.Connection.QueryAsync<Label>(query);
             Console.WriteLine("OBTENIDOS CON EXITO - LabelRepository (GetAllAsync)");
             return labels.ToList();
@@ -54,9 +54,9 @@ public class LabelRepository : ILabelRepository{
 
     }
 
-    public async Task<Label> GetByID(int ID){
+    public async Task<Label> GetByID(int LabelID){
         try{
-            var label = await _dbContext.Connection.GetAsync<Label>(ID);
+            var label = await _dbContext.Connection.GetAsync<Label>(LabelID);
 
             if(label == null){
                 return null;

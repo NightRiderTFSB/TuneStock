@@ -63,16 +63,4 @@ public class UserDownloadRepository : IUserDownloadRepository{
         }
     }
 
-    public async Task<UserDownload> UpdateAsync(UserDownload userDownload)
-    {
-        try{
-            await _dbContext.Connection.UpdateAsync(userDownload);
-            Console.WriteLine("ACTUALIZADO CORRECTAMENTE - UserDownloadRepository (UpdateAsync)");
-            return userDownload;
-            
-        }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserDownloadRepository (UpdateAsync): " + ex.StackTrace);
-            return null;
-        }
-    }
 }

@@ -19,24 +19,6 @@ public class UserPurchaseRepository : IUserPurchaseRepository{
         _dbContext = context;
     }
 
-    public async Task<bool> DeleteAsync(int ID){
-        try{
-            var userPurchase = await GetByID(ID);
-
-            if(userPurchase == null){
-                return false;
-            }
-
-            userPurchase.IsDeleted = true;
-            Console.WriteLine("ELIMINADO CORRECTAMENTE - UserPurchaseRepository (DeleteAsync)");
-            return await _dbContext.Connection.UpdateAsync(userPurchase);
-
-        }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseRepository (DeleteAsync): " + ex.StackTrace);
-            return false;
-        }
-    }
-
     public async Task<List<UserPurchase>> GetAllAsync(){
         try{
             const string query = "SELECT * FROM UserPurchase WHERE IsDeleted = 0";
@@ -80,15 +62,4 @@ public class UserPurchaseRepository : IUserPurchaseRepository{
         }
     }
 
-    public async Task<UserPurchase> UpdateAsync(UserPurchase userPurchase){
-        try{
-            await _dbContext.Connection.UpdateAsync(userPurchase);
-            Console.WriteLine("ACTUALIZADO CORRECTAMENTE - UserPurchaseRepository (UpdateAsync)");
-            return userPurchase;
-
-        }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseRepository (UpdateAsync): " + ex.StackTrace);
-            return null;
-        }
-    }
 }
