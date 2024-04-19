@@ -32,7 +32,7 @@ public class UserRepository : IUserRepository {
             return await _dbContext.Connection.UpdateAsync(user);
 
         }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository ()" + ex.StackTrace);
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository (DeleteAsync)" + ex.StackTrace);
             return false;
         }
     }
@@ -45,7 +45,7 @@ public class UserRepository : IUserRepository {
             return users.ToList();
 
         }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository ()" + ex.StackTrace);
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository (GetAllAsync)" + ex.StackTrace);
             return null;
         }
     }
@@ -63,7 +63,7 @@ public class UserRepository : IUserRepository {
             return user.IsDeleted == true ? null: user;
 
         }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository ()" + ex.StackTrace);
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository (GetByID)" + ex.StackTrace);
             return null;
         }
     }
@@ -75,7 +75,7 @@ public class UserRepository : IUserRepository {
             return user;
 
         }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository ()" + ex.StackTrace);
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository (SaveAsync)" + ex.StackTrace);
             return null;
         }
     }
@@ -87,7 +87,7 @@ public class UserRepository : IUserRepository {
             return user;
 
         }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository ()" + ex.StackTrace);
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserRepository (UpdateAsync)" + ex.StackTrace);
             return null;
         }
     }

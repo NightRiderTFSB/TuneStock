@@ -20,11 +20,13 @@ builder.Services.AddScoped<ILabelRepository, LabelRepository>();
 builder.Services.AddScoped<IUserDownloadRepository, UserDownloadRepository>();
 builder.Services.AddScoped<IUserPurchaseRepository, UserPurchaseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISoundRepository, SoundRepository>();
 
 builder.Services.AddScoped<ILabelService, LabelService>();
 builder.Services.AddScoped<IUserDownloadService, UserDownloadService>();
 builder.Services.AddScoped<IUserPurchaseService, UserPurchaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISoundService, SoundService>();
 
 var app = builder.Build();
 

@@ -6,6 +6,16 @@ namespace tunestock.core.entities;
 
 [Table("UserDownloads")] //Apuntamos a la tabla correspondiente
 public class UserDownload {
+
+    public UserDownload(){
+
+    }
+
+    public UserDownload(UserDownload userDownload){
+        ID = userDownload.ID;
+        SoundID_FK =userDownload.SoundID_FK;
+        DownloadedDate = userDownload.DownloadedDate;
+    }
     
     public int ID { get; set; }
 

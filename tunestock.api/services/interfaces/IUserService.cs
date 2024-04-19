@@ -10,11 +10,11 @@ public interface IUserService {
 
     Task<List<UserDto>> GetAllAsync();
 
-    Task<UserDto> SaveAsync(UserDto user);
+    Task<UserDto> SaveAsync(UserDto sound);
 
     Task<UserDto> GetByID(int ID);
 
-    Task<UserDto> UpdateAsync(UserDto user);
+    Task<UserDto> UpdateAsync(UserDto sound);
 
     Task<bool> DeleteAsync(int ID);
 

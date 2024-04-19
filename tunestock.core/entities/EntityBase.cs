@@ -7,7 +7,7 @@ public abstract class EntityBase{
     /*Esta clase permitirá construir objetos con esta clase "base"
     que nos proporciona los siguientes atributos base*/
 
-    public int ID { get; set; }
+    public int ID { get; set; } //CREO QUE AQUI SE ORIGINA EL PROBLEMA, CREO QUE DEBERÍA SER LabelID
 
     public bool IsDeleted { get; set; }
 

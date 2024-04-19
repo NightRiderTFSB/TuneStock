@@ -61,7 +61,7 @@ public class UserDownloadService : IUserDownloadService{
     }
 
 
-    public async Task<bool> UserExists(int ID){
+    public async Task<bool> UserDownloadExists(int ID){
         try{
             var label = await _userDownloadRepository.GetByID(ID);
             return (label != null);            

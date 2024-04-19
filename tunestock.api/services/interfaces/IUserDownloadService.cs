@@ -6,7 +6,7 @@ namespace tunestock.api.services.interfaces;
 
 public interface IUserDownloadService {
 
-    Task<bool> UserExists(int ID);
+    Task<bool> UserDownloadExists(int ID);
 
     Task<List<UserDownload>> GetAllAsync();
 

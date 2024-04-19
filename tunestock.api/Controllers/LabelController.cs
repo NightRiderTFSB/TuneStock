@@ -40,11 +40,17 @@ public class LabelController : ControllerBase{
     }
 
     [HttpPost]
-    public async Task<ActionResult<Response<LabelDto>>> Post([FromBody] LabelDto labelDto){
+    public async Task<ActionResult<Response<LabelDto>>> Post([FromBody] InputLabelDto inputLabelDto){
         
         var response = new Response<LabelDto>();
 
         try{
+            LabelDto labelDto = new LabelDto(){
+                Labelname = inputLabelDto.Labelname,
+                Description = inputLabelDto.Description
+                
+            };
+
             response.Data = await _labelService.SaveAsync(labelDto);
             return Created("/api/[controller]/{response.Data.ID}", response);
 
