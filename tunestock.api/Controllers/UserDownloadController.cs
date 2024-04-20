@@ -1,5 +1,6 @@
 //Importamos la arquitectura MVC de dotNET
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 //Importamos nuestras entidades, dtos y servicios
 using tunestock.core.entities;
@@ -16,9 +17,11 @@ namespace tunestock.api.controllers;
 public class UserDownloadController : ControllerBase {
 
     private readonly IUserDownloadService _userDownloadService;
+    private readonly IValidator<InputUserDownloadDto> _validator;
 
-    public UserDownloadController(IUserDownloadService userDownloadService){
+    public UserDownloadController(IUserDownloadService userDownloadService, IValidator<InputUserDownloadDto> validator){
         _userDownloadService = userDownloadService;
+        _validator = validator;
     }
 
     //END POINTS
@@ -45,6 +48,14 @@ public class UserDownloadController : ControllerBase {
         var response = new Response<UserDownload>();
 
         try{
+            var validationResult = await _validator.ValidateAsync(inputUserDownloadDto);
+
+            if(!validationResult.IsValid){
+                response.Errors.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
+                return BadRequest(response);
+            }
+
+
             UserDownload userDownload = new UserDownload(){
                 SoundID_FK = inputUserDownloadDto.SoundID_FK,
                 UserID_FK = inputUserDownloadDto.UserID_FK,

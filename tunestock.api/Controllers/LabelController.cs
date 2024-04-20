@@ -1,5 +1,6 @@
 //Importamos la arquitectura MVC de dotNET
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 //Importamos nuestras entidades, dtos y servicios
 using tunestock.core.entities;
@@ -15,10 +16,11 @@ namespace tunestock.api.controllers;
 public class LabelController : ControllerBase{
 
     private readonly ILabelService _labelService; //Establecemos nuestras dependencias
+    private readonly IValidator<InputLabelDto> _validator;
 
-    public LabelController(ILabelService labelService){
+    public LabelController(ILabelService labelService, IValidator<InputLabelDto> validator){
         _labelService = labelService; //Inyectamos la dependencia
-
+        _validator = validator;
     }
 
     //END POINTS
@@ -45,6 +47,14 @@ public class LabelController : ControllerBase{
         var response = new Response<LabelDto>();
 
         try{
+
+            var validationResult = await _validator.ValidateAsync(inputLabelDto);
+
+            if(!validationResult.IsValid){
+                response.Errors.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
+                return BadRequest(response);
+            }
+
             LabelDto labelDto = new LabelDto(){
                 Labelname = inputLabelDto.Labelname,
                 Description = inputLabelDto.Description

@@ -37,3 +37,9 @@
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/MySqlConnector.dll
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/tunestock.core.dll
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/tunestock.core.pdb
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/FluentValidation.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/FluentValidation.AspNetCore.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/FluentValidation.DependencyInjectionExtensions.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/SharpGrip.FluentValidation.AutoValidation.Mvc.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/SharpGrip.FluentValidation.AutoValidation.Shared.dll
+/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/bin/Debug/net7.0/Controllers/try.json

@@ -1,5 +1,6 @@
 //Importamos la arquitectura MVC de dotNET
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 //Importamos nuestras entidades, dtos y servicios
 using tunestock.core.entities;
@@ -16,10 +17,12 @@ namespace tunestock.api.controllers;
 public class UserPurchaseController : ControllerBase{
 
     private readonly IUserPurchaseService _userPurchaseService; //Establecemos nuestras dependencias
+    private readonly IValidator<InputUserPurchaseDto> _validator;
 
-    public UserPurchaseController(IUserPurchaseService userPurchaseService){
+
+    public UserPurchaseController(IUserPurchaseService userPurchaseService, IValidator<InputUserPurchaseDto> validator){
         _userPurchaseService = userPurchaseService; //Inyectamos la dependencia
-
+        _validator = validator;
     }
 
     //END POINTS
@@ -46,6 +49,13 @@ public class UserPurchaseController : ControllerBase{
         var response = new Response<UserPurchaseDto>();
 
         try{
+            var validationResult = await _validator.ValidateAsync(inputUserPurchaseDto);
+
+            if(!validationResult.IsValid){
+                response.Errors.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
+                return BadRequest(response);
+            }
+
             UserPurchaseDto userPurchaseDto = new UserPurchaseDto(){
                 PurchasedDate = inputUserPurchaseDto.PurchasedDate,
                 SoundPrice = inputUserPurchaseDto.SoundPrice,

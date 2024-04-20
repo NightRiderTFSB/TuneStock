@@ -1,5 +1,6 @@
 //Importamos la arquitectura MVC de dotNET
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 //Importamos nuestras entidades, dtos y servicios
 using tunestock.core.entities;
@@ -16,10 +17,12 @@ namespace tunestock.api.controllers;
 public class UserController : ControllerBase {
 
     private readonly IUserService _userService; //Establecemos nuestras dependencias
+    private readonly IValidator<InputUserDto> _validator;
 
-    public UserController(IUserService userService){
+
+    public UserController(IUserService userService, IValidator<InputUserDto> validator){
         _userService = userService; //Inyectamos la dependencia
-
+        _validator = validator;
     }
 
     //END POINTS
@@ -46,6 +49,13 @@ public class UserController : ControllerBase {
         var response = new Response<UserDto>();
 
         try{
+
+            var validationResult = await _validator.ValidateAsync(inputUserDto);
+
+            if(!validationResult.IsValid){
+                response.Errors.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
+                return BadRequest(response);
+            }
 
             UserDto userDto = new UserDto(){
                 Username = inputUserDto.Username,

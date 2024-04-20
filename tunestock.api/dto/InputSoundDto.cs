@@ -1,4 +1,5 @@
 //Importamos la entidad correspondiente
+using System.ComponentModel.DataAnnotations;
 using tunestock.core.entities;
 
 //Nombre del paquete al que pertenece la clase
@@ -6,8 +7,8 @@ namespace tunestock.api.dto;
 
 public class InputSoundDto{
     
-
     public int UserID { get; set; }
+
     public string? SoundName { get; set; }
 
     public string? File { get; set; }

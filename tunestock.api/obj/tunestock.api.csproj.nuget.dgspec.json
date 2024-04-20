@@ -50,6 +50,14 @@
               "target": "Package",
               "version": "[2.0.78, )"
             },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[11.9.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.16, )"
@@ -57,6 +65,10 @@
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.6, )"
+            },
+            "SharpGrip.FluentValidation.AutoValidation.Mvc": {
+              "target": "Package",
+              "version": "[1.4.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

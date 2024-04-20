@@ -1,9 +1,11 @@
 //Importamos nuestros paquetes
+using FluentValidation;
 using tunestock.api.dataAccess.interfaces;
 using tunestock.api.repositories;
 using tunestock.api.repositories.interfaces;
 using tunestock.api.services;
 using tunestock.api.services.interfaces;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,10 @@ builder.Services.AddScoped<IUserDownloadService, UserDownloadService>();
 builder.Services.AddScoped<IUserPurchaseService, UserPurchaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISoundService, SoundService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
+
 
 var app = builder.Build();
 
