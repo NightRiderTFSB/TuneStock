@@ -98,11 +98,20 @@ public class UserController : ControllerBase {
     }
 
     [HttpPut]
-    public async Task<ActionResult<Response<Label>>> Update([FromBody] UserDto userDto){
+    [Route("{ID:int}")]
+    public async Task<ActionResult<Response<Label>>> Update([FromBody] InputUserDto inputUserDto, int ID){
         
         var response = new Response<UserDto>();
 
         try{
+
+            UserDto userDto = new UserDto(){
+                ID = ID,
+                Username = inputUserDto.Username,
+                Email = inputUserDto.Email,
+                Password = inputUserDto.Password
+            };
+
             if(!await _userService.UserExists(userDto.ID)){
                 response.Errors.Add("Label Not Found");
                 return NotFound(response);

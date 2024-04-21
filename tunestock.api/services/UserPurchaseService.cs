@@ -15,9 +15,9 @@ public class UserPurchaseService : IUserPurchaseService {
         _userPurchaseRepository = userPurchaseRepository;
     }
 
-    public async Task<List<UserPurchaseDto>> GetAllAsync(){
+    public async Task<List<UserPurchaseDto>> GetAllAsync(int userID_FK){
         try{
-            var userPurchases = await _userPurchaseRepository.GetAllAsync();
+            var userPurchases = await _userPurchaseRepository.GetAllAsync(userID_FK);
             var userPurchaseDtos = userPurchases.Select(u => new UserPurchaseDto(u)).ToList();
             return userPurchaseDtos;
         }catch(Exception ex){
@@ -78,4 +78,17 @@ public class UserPurchaseService : IUserPurchaseService {
             return false;
         }
     }
+
+    public async Task<bool> IfExistsByUserID_FK(int userID_FK){
+        try{
+            var userPurchase = await _userPurchaseRepository.IfExistsByUserID_FK(userID_FK);
+            return (userPurchase != null);
+
+        }catch(Exception ex){
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseService (UserPurchaseExists)" + ex.StackTrace);
+            return false;
+        }
+    }
+
+    
 }

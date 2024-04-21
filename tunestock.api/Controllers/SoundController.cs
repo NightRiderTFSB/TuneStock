@@ -101,11 +101,22 @@ public class SoundController : ControllerBase{
     }
 
     [HttpPut]
-    public async Task<ActionResult<Response<Sound>>> Update([FromBody] SoundDto soundDto){
+    [Route("{ID:int}")]
+    public async Task<ActionResult<Response<Sound>>> Update([FromBody] InputSoundDto inputSoundDto, int ID){
         
         var response = new Response<SoundDto>();
 
         try{
+
+            SoundDto soundDto = new SoundDto(){
+                ID = ID,
+                UserID = inputSoundDto.UserID,
+                SoundName = inputSoundDto.SoundName,
+                File = inputSoundDto.File,
+                IsPremiun = inputSoundDto.IsPremiun,
+                Price = inputSoundDto.Price
+            };
+
             if(!await _soundService.SoundExists(soundDto.ID)){
                 response.Errors.Add("Sound Not Found");
                 return NotFound(response);

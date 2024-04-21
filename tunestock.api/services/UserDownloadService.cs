@@ -15,9 +15,9 @@ public class UserDownloadService : IUserDownloadService{
         _userDownloadRepository = userDownloadRepository;
     }
 
-    public async Task<List<UserDownload>> GetAllAsync(){
+    public async Task<List<UserDownload>> GetAllAsync(int userID_FK){
         try{
-            var userDownloads = await _userDownloadRepository.GetAllAsync();
+            var userDownloads = await _userDownloadRepository.GetAllAsync(userID_FK);
             var userDownloadsDto = userDownloads.Select(l => new UserDownload(l)).ToList();
             return userDownloadsDto;
         }catch(Exception ex){
@@ -60,6 +60,17 @@ public class UserDownloadService : IUserDownloadService{
         }
     }
 
+
+    public async Task<bool> IfExistsByUserID_FK(int ID){
+        try{
+            var downloads = await _userDownloadRepository.IfExistsByUserID_FK(ID);
+            return (downloads != null);            
+
+        }catch(Exception ex){
+            Console.WriteLine("HA OCURRIDO UN ERROR - userDownloadService (UserExists):" + ex.StackTrace);
+            return false;
+        }
+    }
 
     public async Task<bool> UserDownloadExists(int ID){
         try{

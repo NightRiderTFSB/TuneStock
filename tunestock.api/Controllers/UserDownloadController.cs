@@ -26,12 +26,17 @@ public class UserDownloadController : ControllerBase {
 
     //END POINTS
     [HttpGet]
-    public async Task<ActionResult<Response<List<UserDownload>>>> GetAll(){
+    public async Task<ActionResult<Response<List<UserDownload>>>> GetAll([FromQuery] int userID_FK){
 
         var response = new Response<List<UserDownload>>();
 
         try{
-            response.Data = await _userDownloadService.GetAllAsync();
+            if(!await _userDownloadService.IfExistsByUserID_FK(userID_FK)){
+                response.Errors.Add("User not exists");
+                return NotFound(response);
+            }
+
+            response.Data = await _userDownloadService.GetAllAsync(userID_FK);
             return Ok(response);
 
         }catch(Exception ex){

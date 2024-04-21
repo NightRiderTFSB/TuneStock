@@ -27,12 +27,19 @@ public class UserPurchaseController : ControllerBase{
 
     //END POINTS
     [HttpGet]
-    public async Task<ActionResult<Response<List<UserPurchaseDto>>>> GetAll(){
+    public async Task<ActionResult<Response<List<UserPurchaseDto>>>> GetAll([FromQuery] int userID_FK){
 
         var response = new Response<List<UserPurchaseDto>>();
 
         try{
-            response.Data = await _userPurchaseService.GetAllAsync();
+            if(!await _userPurchaseService.IfExistsByUserID_FK(userID_FK)){
+                response.Errors.Add("User not exists");
+                return NotFound(response);
+            }
+
+
+            response.Data = await _userPurchaseService.GetAllAsync(userID_FK);
+            
             return Ok(response);
 
         }catch(Exception ex){

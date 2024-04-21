@@ -10,9 +10,11 @@ public interface IUserPurchaseRepository{
     Task<UserPurchase> SaveAsync(UserPurchase userPurchase);
 
     //Método asíncrono para retornar todas las user purchases
-    Task<List<UserPurchase>> GetAllAsync();
+    Task<List<UserPurchase>> GetAllAsync(int userID_FK);
 
     //Método asíncrono para retornar una user purchase por ID
     Task<UserPurchase> GetByID(int ID);
+
+    Task<List<UserPurchase>> IfExistsByUserID_FK(int userID_FK);
 
 }

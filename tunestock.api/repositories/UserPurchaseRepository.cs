@@ -19,9 +19,9 @@ public class UserPurchaseRepository : IUserPurchaseRepository{
         _dbContext = context;
     }
 
-    public async Task<List<UserPurchase>> GetAllAsync(){
+    public async Task<List<UserPurchase>> GetAllAsync(int userID_FK){
         try{
-            const string query = "SELECT * FROM UserPurchase WHERE IsDeleted = 0";
+            string query = $"SELECT * FROM UserPurchases WHERE UserID_FK = {userID_FK};";
             var userPurchase = await _dbContext.Connection.QueryAsync<UserPurchase>(query);
             Console.WriteLine("OBTENIDOS CON EXITO - UserPurchaseRepository (GetAllAsync)");
             return userPurchase.ToList();
@@ -58,6 +58,21 @@ public class UserPurchaseRepository : IUserPurchaseRepository{
 
         }catch(Exception ex){
             Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseRepository (SaveAsync): " + ex.StackTrace);
+            return null;
+        }
+    }
+
+    public async Task<List<UserPurchase>> IfExistsByUserID_FK(int userID_FK)
+    {
+        try{
+            string query = $"SELECT * FROM UserPurchases WHERE UserID_FK = {userID_FK};";
+            var userPurchase = await _dbContext.Connection.QueryAsync<UserPurchase>(query);
+            Console.WriteLine("UserID_FK → "+userPurchase.AsList()[0].SoundID_FK);
+            Console.WriteLine("OBTENIDOS CON EXITO - UserPurchaseRepository (IfExistsByUserID_FK)");
+            return userPurchase.ToList();
+
+        }catch(Exception ex){
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseRepository (GetByID): " + ex.StackTrace);
             return null;
         }
     }

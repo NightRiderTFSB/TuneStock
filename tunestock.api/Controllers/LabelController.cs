@@ -96,11 +96,19 @@ public class LabelController : ControllerBase{
     }
 
     [HttpPut]
-    public async Task<ActionResult<Response<Label>>> Update([FromBody] LabelDto labelDto){
+    [Route("{ID:int}")]
+    public async Task<ActionResult<Response<Label>>> Update([FromBody] InputLabelDto inputLabelDto, int ID){
         
         var response = new Response<LabelDto>();
 
         try{
+
+            LabelDto labelDto = new LabelDto(){
+                ID = ID,
+                Labelname = inputLabelDto.Labelname,
+                Description = inputLabelDto.Description
+            };
+
             if(!await _labelService.LabelExists(labelDto.ID)){
                 response.Errors.Add("Label Not Found");
                 return NotFound(response);

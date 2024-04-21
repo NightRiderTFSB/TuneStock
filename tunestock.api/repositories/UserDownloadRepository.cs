@@ -18,10 +18,10 @@ public class UserDownloadRepository : IUserDownloadRepository{
         _dbContext = context;
     }
 
-    public async Task<List<UserDownload>> GetAllAsync(){
+    public async Task<List<UserDownload>> GetAllAsync(int userID_FK){
         
         try{
-            const string query = "SELECT * FROM UserDownloads WHERE IsDeleted = 0";
+            string query = $"SELECT * FROM UserDownloads WHERE UserID_FK = {userID_FK};";
             var userDownloads = await _dbContext.Connection.QueryAsync<UserDownload>(query);
             Console.WriteLine("OBTENIDOS CON EXITO - UserDownloadRepository (GetAllAsync)");
             return userDownloads.ToList();
@@ -61,6 +61,22 @@ public class UserDownloadRepository : IUserDownloadRepository{
             Console.WriteLine("HA OCURRIDO UN ERROR - UserDownloadRepository (SaveAsync): " + ex.StackTrace);
             return null;
         }
+    }
+
+    public async Task<List<UserDownload>> IfExistsByUserID_FK(int userID_FK){
+        
+        try{
+            string query = $"SELECT * FROM UserDownloads WHERE UserID_FK = {userID_FK};";
+            var userDownloads = await _dbContext.Connection.QueryAsync<UserDownload>(query);
+            Console.WriteLine("UserID_FK → "+userDownloads.AsList()[0].SoundID_FK);
+            Console.WriteLine("OBTENIDOS CON EXITO - UserDownloadRepository (IfExistsByUserID_FK)");
+            return userDownloads.ToList();
+
+        }catch(Exception ex){
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserDownloadRepository (IfExistsByUserID_FK)" + ex.StackTrace);
+            return null;
+        }
+
     }
 
 }

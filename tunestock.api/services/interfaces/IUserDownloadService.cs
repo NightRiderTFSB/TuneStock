@@ -8,11 +8,11 @@ public interface IUserDownloadService {
 
     Task<bool> UserDownloadExists(int ID);
 
-    Task<List<UserDownload>> GetAllAsync();
+    Task<List<UserDownload>> GetAllAsync(int userID_FK);
 
     Task<UserDownload> SaveAsync(UserDownload userDownload);
 
     Task<UserDownload> GetByID(int ID);
 
-
+    Task<bool> IfExistsByUserID_FK(int userID_FK);
 }

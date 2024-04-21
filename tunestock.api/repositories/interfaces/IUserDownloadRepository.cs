@@ -10,9 +10,11 @@ public interface IUserDownloadRepository{
     Task<UserDownload> SaveAsync(UserDownload userDownload);
 
     //Método asíncrono para retornar todas las user downloads
-    Task<List<UserDownload>> GetAllAsync();
+    Task<List<UserDownload>> GetAllAsync(int userID_FK);
 
     //Método asíncrono para retornar una user download por ID
     Task<UserDownload> GetByID(int ID);
+
+    Task<List<UserDownload>> IfExistsByUserID_FK(int ID);
 
 }

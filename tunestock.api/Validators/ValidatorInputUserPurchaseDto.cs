@@ -20,7 +20,7 @@ public class ValidatorInputUserPurchaseDto : AbstractValidator<InputUserPurchase
         RuleFor(i => i.SoundID_FK).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío");
         RuleFor(i => i.SoundPrice).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío");
         RuleFor(i => i.PurchasedDate).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío");
-        RuleFor(i => i.PaymentStatus).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío");
+        
         RuleFor(i => i.PaymentMethod).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío");
         
     }   

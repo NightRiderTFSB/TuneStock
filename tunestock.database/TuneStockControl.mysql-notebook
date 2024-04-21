@@ -1,0 +1,616 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "DB Notebook",
+    "content": "USE TuneStock; \n\nSHOW TABLES; \n\nDESCRIBE Labels; \nDESCRIBE Sound;\nDESCRIBE SoundsLabels;\nDESCRIBE User;\nDESCRIBE UserDownloads;\nDESCRIBE UserPurchases;\nDESCRIBE UserSoundStock;\n\nSELECT * FROM Labels;\nSELECT * FROM Sound;\nSELECT * FROM SoundsLabels;\nSELECT * FROM User;\nSELECT * FROM UserDownloads WHERE UserID_FK = 1;\nSELECT * FROM UserPurchases;\nSELECT * FROM UserSoundStock;\n\nDELETE FROM Labels; \nDELETE FROM Sound;\nDELETE FROM SoundsLabels;\nDELETE FROM User;\nDELETE FROM UserDownloads;\nDELETE FROM UserPurchases;\nDELETE FROM UserSoundStock;\n\nALTER TABLE Labels AUTO_INCREMENT = 1;\nALTER TABLE Sound AUTO_INCREMENT = 1;\nALTER TABLE User AUTO_INCREMENT = 1;\nALTER TABLE UserDownloads AUTO_INCREMENT = 1;\nALTER TABLE UserPurchases AUTO_INCREMENT = 1;\n\nINSERT INTO Labels (Labelname, Description, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('Synthwave Guitar Riff', 'A guitar riff with synthwave vibes', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP()); \n\nINSERT INTO User (Username, Email, Password, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('SarboyCool', 'StarboyCool@outlook.com', 'StarboyCool', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nCALL InsertSoundAndLabel(1, 'Synthwave Guitar Riff', '/SynthGuitarRiff.mp3', TRUE, 10.50, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP(), 1);\n\nINSERT INTO UserPurchases (PurchasedDate, SoundPrice, PaymentStatus, PaymentMethod, UserID_FK, SoundID_FK, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES (CURRENT_TIMESTAMP(), 10.50, TRUE, 'CREDIT CARD', 1, 1, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nINSERT INTO UserDownloads (SoundID_FK, UserID_FK, DownloadedDate) \nVALUES (1, 1, CURRENT_TIMESTAMP());\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "options": {
+        "tabSize": 4,
+        "indentSize": 4,
+        "insertSpaces": true,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": {
+        "cursorState": [
+            {
+                "inSelectionMode": false,
+                "selectionStart": {
+                    "lineNumber": 17,
+                    "column": 49
+                },
+                "position": {
+                    "lineNumber": 17,
+                    "column": 49
+                }
+            }
+        ],
+        "viewState": {
+            "scrollLeft": 0,
+            "firstPosition": {
+                "lineNumber": 35,
+                "column": 1
+            },
+            "firstPositionDeltaTop": -20
+        },
+        "contributionsState": {
+            "editor.contrib.folding": {},
+            "editor.contrib.wordHighlighter": false
+        }
+    },
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 48,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "187680df-0274-4656-f00f-4c417240f8c6"
+                    ]
+                },
+                "currentHeight": 86,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 14
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 14,
+                            "length": 15
+                        },
+                        "contentStart": 17,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 29,
+                            "length": 19
+                        },
+                        "contentStart": 33,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 48,
+                            "length": 17
+                        },
+                        "contentStart": 51,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 65,
+                            "length": 23
+                        },
+                        "contentStart": 67,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 88,
+                            "length": 15
+                        },
+                        "contentStart": 90,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 103,
+                            "length": 24
+                        },
+                        "contentStart": 105,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 127,
+                            "length": 24
+                        },
+                        "contentStart": 129,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 151,
+                            "length": 25
+                        },
+                        "contentStart": 153,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 176,
+                            "length": 23
+                        },
+                        "contentStart": 178,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 199,
+                            "length": 21
+                        },
+                        "contentStart": 200,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 220,
+                            "length": 28
+                        },
+                        "contentStart": 221,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 248,
+                            "length": 20
+                        },
+                        "contentStart": 249,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 268,
+                            "length": 49
+                        },
+                        "contentStart": 269,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 317,
+                            "length": 29
+                        },
+                        "contentStart": 318,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 346,
+                            "length": 30
+                        },
+                        "contentStart": 347,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 376,
+                            "length": 21
+                        },
+                        "contentStart": 379,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 397,
+                            "length": 20
+                        },
+                        "contentStart": 400,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 417,
+                            "length": 26
+                        },
+                        "contentStart": 419,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 443,
+                            "length": 18
+                        },
+                        "contentStart": 445,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 461,
+                            "length": 27
+                        },
+                        "contentStart": 463,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 488,
+                            "length": 27
+                        },
+                        "contentStart": 490,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 515,
+                            "length": 28
+                        },
+                        "contentStart": 517,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 543,
+                            "length": 40
+                        },
+                        "contentStart": 545,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 583,
+                            "length": 38
+                        },
+                        "contentStart": 584,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 621,
+                            "length": 37
+                        },
+                        "contentStart": 622,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 658,
+                            "length": 46
+                        },
+                        "contentStart": 659,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 704,
+                            "length": 46
+                        },
+                        "contentStart": 705,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 750,
+                            "length": 251
+                        },
+                        "contentStart": 752,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1001,
+                            "length": 246
+                        },
+                        "contentStart": 1004,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1247,
+                            "length": 170
+                        },
+                        "contentStart": 1249,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1417,
+                            "length": 306
+                        },
+                        "contentStart": 1419,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1723,
+                            "length": 104
+                        },
+                        "contentStart": 1725,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1827,
+                            "length": 1
+                        },
+                        "contentStart": 1826,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d477bf5d-211b-4a00-a0db-3189efc5b0b1",
+                    "resultId": "187680df-0274-4656-f00f-4c417240f8c6",
+                    "rows": [
+                        {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": "2024-04-20 22:57:03"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "ID",
+                            "field": "0",
+                            "dataType": {
+                                "type": 4
+                            }
+                        },
+                        {
+                            "title": "SoundID_FK",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4
+                            }
+                        },
+                        {
+                            "title": "UserID_FK",
+                            "field": "2",
+                            "dataType": {
+                                "type": 4
+                            }
+                        },
+                        {
+                            "title": "DownloadedDate",
+                            "field": "3",
+                            "dataType": {
+                                "type": 26
+                            }
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 0.522ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "\nSELECT * FROM UserDownloads WHERE UserID_FK = 1;"
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 49,
+                "end": 50,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 51,
+                "end": 52,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 53,
+                "end": 54,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 55,
+                "end": 56,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 57,
+                "end": 58,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 59,
+                "end": 60,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 61,
+                "end": 62,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 63,
+                "end": 64,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 65,
+                "end": 66,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 1
+                        },
+                        "contentStart": -1,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 67,
+                "end": 67,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        }
+    ]
+}

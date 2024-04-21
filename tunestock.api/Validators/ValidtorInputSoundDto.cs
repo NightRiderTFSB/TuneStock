@@ -17,9 +17,7 @@ public class ValidatorInputSoundDto : AbstractValidator<InputSoundDto> {
 
 
         RuleFor(i => i.UserID).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío"); //Debe ser int
-        RuleFor(i => i.Price).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío"); //Debe ser double
         RuleFor(i => i.File).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío"); //Debe ser string
-        RuleFor(i => i.IsPremiun).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío"); //debe ser bool
         RuleFor(i => i.SoundName).NotEmpty().WithMessage("{PropertyName} → No puede estar vacío"); // debe ser string
     }
 
