@@ -2,7 +2,7 @@
     "type": "MySQLNotebook",
     "version": "1.0",
     "caption": "DB Notebook",
-    "content": "USE TuneStock; \n\nSHOW TABLES; \n\nDESCRIBE Labels; \nDESCRIBE Sound;\nDESCRIBE SoundsLabels;\nDESCRIBE User;\nDESCRIBE UserDownloads;\nDESCRIBE UserPurchases;\nDESCRIBE UserSoundStock;\n\nSELECT * FROM Labels;\nSELECT * FROM Sound;\nSELECT * FROM SoundsLabels;\nSELECT * FROM User;\nSELECT * FROM UserDownloads WHERE UserID_FK = 1;\nSELECT * FROM UserPurchases;\nSELECT * FROM UserSoundStock;\n\nDELETE FROM Labels; \nDELETE FROM Sound;\nDELETE FROM SoundsLabels;\nDELETE FROM User;\nDELETE FROM UserDownloads;\nDELETE FROM UserPurchases;\nDELETE FROM UserSoundStock;\n\nALTER TABLE Labels AUTO_INCREMENT = 1;\nALTER TABLE Sound AUTO_INCREMENT = 1;\nALTER TABLE User AUTO_INCREMENT = 1;\nALTER TABLE UserDownloads AUTO_INCREMENT = 1;\nALTER TABLE UserPurchases AUTO_INCREMENT = 1;\n\nINSERT INTO Labels (Labelname, Description, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('Synthwave Guitar Riff', 'A guitar riff with synthwave vibes', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP()); \n\nINSERT INTO User (Username, Email, Password, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('SarboyCool', 'StarboyCool@outlook.com', 'StarboyCool', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nCALL InsertSoundAndLabel(1, 'Synthwave Guitar Riff', '/SynthGuitarRiff.mp3', TRUE, 10.50, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP(), 1);\n\nINSERT INTO UserPurchases (PurchasedDate, SoundPrice, PaymentStatus, PaymentMethod, UserID_FK, SoundID_FK, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES (CURRENT_TIMESTAMP(), 10.50, TRUE, 'CREDIT CARD', 1, 1, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nINSERT INTO UserDownloads (SoundID_FK, UserID_FK, DownloadedDate) \nVALUES (1, 1, CURRENT_TIMESTAMP());\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "content": "USE TuneStock; \nSHOW TABLES; \n\nDESCRIBE Labels; \nDESCRIBE Sound;\nDESCRIBE SoundsLabels;\nDESCRIBE User;\nDESCRIBE UserDownloads;\nDESCRIBE UserPurchases;\nDESCRIBE UserSoundStock;\n\nSELECT * FROM Labels;\nSELECT * FROM Sound;\nSELECT * FROM SoundsLabels;\nSELECT * FROM User;\nSELECT * FROM UserDownloads WHERE UserID_FK = 1;\nSELECT * FROM UserPurchases;\nSELECT * FROM UserSoundStock;\n\nINSERT INTO Labels (Labelname, Description, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('Synthwave Guitar Riff', 'A guitar riff with synthwave vibes', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP()); \n\nINSERT INTO User (Username, Email, Password, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES ('SarboyCool', 'StarboyCool@outlook.com', 'StarboyCool', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nCALL InsertSoundAndLabel(1, 'Synthwave Guitar Riff', '/SynthGuitarRiff.mp3', TRUE, 10.50, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP(), 1);\n\nINSERT INTO UserPurchases (PurchasedDate, SoundPrice, PaymentStatus, PaymentMethod, UserID_FK, SoundID_FK, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)\nVALUES (CURRENT_TIMESTAMP(), 10.50, TRUE, 'CREDIT CARD', 1, 1, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());\n\nINSERT INTO UserDownloads (SoundID_FK, UserID_FK, DownloadedDate) \nVALUES (1, 1, CURRENT_TIMESTAMP());\n\n-- WARNING DON'T BE DUMB -------------------------\nDELETE FROM Labels; \nDELETE FROM Sound;\nDELETE FROM SoundsLabels;\nDELETE FROM User;\nDELETE FROM UserDownloads;\nDELETE FROM UserPurchases;\nDELETE FROM UserSoundStock;\n\nALTER TABLE Labels AUTO_INCREMENT = 1;\nALTER TABLE Sound AUTO_INCREMENT = 1;\nALTER TABLE User AUTO_INCREMENT = 1;\nALTER TABLE UserDownloads AUTO_INCREMENT = 1;\nALTER TABLE UserPurchases AUTO_INCREMENT = 1;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
     "options": {
         "tabSize": 4,
         "indentSize": 4,
@@ -15,22 +15,22 @@
             {
                 "inSelectionMode": false,
                 "selectionStart": {
-                    "lineNumber": 17,
-                    "column": 49
+                    "lineNumber": 49,
+                    "column": 1
                 },
                 "position": {
-                    "lineNumber": 17,
-                    "column": 49
+                    "lineNumber": 49,
+                    "column": 1
                 }
             }
         ],
         "viewState": {
             "scrollLeft": 0,
             "firstPosition": {
-                "lineNumber": 35,
+                "lineNumber": 27,
                 "column": 1
             },
-            "firstPositionDeltaTop": -20
+            "firstPositionDeltaTop": -3
         },
         "contributionsState": {
             "editor.contrib.folding": {},
@@ -41,15 +41,9 @@
         {
             "state": {
                 "start": 1,
-                "end": 48,
+                "end": 3,
                 "language": "mysql",
-                "result": {
-                    "type": "resultIds",
-                    "list": [
-                        "187680df-0274-4656-f00f-4c417240f8c6"
-                    ]
-                },
-                "currentHeight": 86,
+                "currentHeight": 36,
                 "statements": [
                     {
                         "delimiter": ";",
@@ -64,353 +58,382 @@
                         "delimiter": ";",
                         "span": {
                             "start": 14,
-                            "length": 15
+                            "length": 14
                         },
-                        "contentStart": 17,
+                        "contentStart": 16,
                         "state": 0
                     },
                     {
                         "delimiter": ";",
                         "span": {
-                            "start": 29,
-                            "length": 19
+                            "start": 28,
+                            "length": 2
                         },
-                        "contentStart": 33,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 48,
-                            "length": 17
-                        },
-                        "contentStart": 51,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 65,
-                            "length": 23
-                        },
-                        "contentStart": 67,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 88,
-                            "length": 15
-                        },
-                        "contentStart": 90,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 103,
-                            "length": 24
-                        },
-                        "contentStart": 105,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 127,
-                            "length": 24
-                        },
-                        "contentStart": 129,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 151,
-                            "length": 25
-                        },
-                        "contentStart": 153,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 176,
-                            "length": 23
-                        },
-                        "contentStart": 178,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 199,
-                            "length": 21
-                        },
-                        "contentStart": 200,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 220,
-                            "length": 28
-                        },
-                        "contentStart": 221,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 248,
-                            "length": 20
-                        },
-                        "contentStart": 249,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 268,
-                            "length": 49
-                        },
-                        "contentStart": 269,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 317,
-                            "length": 29
-                        },
-                        "contentStart": 318,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 346,
-                            "length": 30
-                        },
-                        "contentStart": 347,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 376,
-                            "length": 21
-                        },
-                        "contentStart": 379,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 397,
-                            "length": 20
-                        },
-                        "contentStart": 400,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 417,
-                            "length": 26
-                        },
-                        "contentStart": 419,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 443,
-                            "length": 18
-                        },
-                        "contentStart": 445,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 461,
-                            "length": 27
-                        },
-                        "contentStart": 463,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 488,
-                            "length": 27
-                        },
-                        "contentStart": 490,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 515,
-                            "length": 28
-                        },
-                        "contentStart": 517,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 543,
-                            "length": 40
-                        },
-                        "contentStart": 545,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 583,
-                            "length": 38
-                        },
-                        "contentStart": 584,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 621,
-                            "length": 37
-                        },
-                        "contentStart": 622,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 658,
-                            "length": 46
-                        },
-                        "contentStart": 659,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 704,
-                            "length": 46
-                        },
-                        "contentStart": 705,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 750,
-                            "length": 251
-                        },
-                        "contentStart": 752,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 1001,
-                            "length": 246
-                        },
-                        "contentStart": 1004,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 1247,
-                            "length": 170
-                        },
-                        "contentStart": 1249,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 1417,
-                            "length": 306
-                        },
-                        "contentStart": 1419,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 1723,
-                            "length": 104
-                        },
-                        "contentStart": 1725,
-                        "state": 0
-                    },
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 1827,
-                            "length": 1
-                        },
-                        "contentStart": 1826,
+                        "contentStart": 27,
                         "state": 3
                     }
                 ]
             },
-            "data": [
-                {
-                    "tabId": "d477bf5d-211b-4a00-a0db-3189efc5b0b1",
-                    "resultId": "187680df-0274-4656-f00f-4c417240f8c6",
-                    "rows": [
-                        {
-                            "0": 1,
-                            "1": 1,
-                            "2": 1,
-                            "3": "2024-04-20 22:57:03"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "title": "ID",
-                            "field": "0",
-                            "dataType": {
-                                "type": 4
-                            }
+            "data": []
+        },
+        {
+            "state": {
+                "start": 4,
+                "end": 11,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 16
                         },
-                        {
-                            "title": "SoundID_FK",
-                            "field": "1",
-                            "dataType": {
-                                "type": 4
-                            }
-                        },
-                        {
-                            "title": "UserID_FK",
-                            "field": "2",
-                            "dataType": {
-                                "type": 4
-                            }
-                        },
-                        {
-                            "title": "DownloadedDate",
-                            "field": "3",
-                            "dataType": {
-                                "type": 26
-                            }
-                        }
-                    ],
-                    "executionInfo": {
-                        "text": "OK, 1 record retrieved in 0.522ms"
+                        "contentStart": 1,
+                        "state": 0
                     },
-                    "totalRowCount": 1,
-                    "hasMoreRows": false,
-                    "currentPage": 0,
-                    "index": 0,
-                    "sql": "\nSELECT * FROM UserDownloads WHERE UserID_FK = 1;"
-                }
-            ]
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 16,
+                            "length": 17
+                        },
+                        "contentStart": 19,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 33,
+                            "length": 23
+                        },
+                        "contentStart": 35,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 56,
+                            "length": 15
+                        },
+                        "contentStart": 58,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 71,
+                            "length": 24
+                        },
+                        "contentStart": 73,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 95,
+                            "length": 24
+                        },
+                        "contentStart": 97,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 119,
+                            "length": 25
+                        },
+                        "contentStart": 121,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 144,
+                            "length": 1
+                        },
+                        "contentStart": 143,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 12,
+                "end": 19,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 21
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 21,
+                            "length": 21
+                        },
+                        "contentStart": 22,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 42,
+                            "length": 28
+                        },
+                        "contentStart": 43,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 70,
+                            "length": 20
+                        },
+                        "contentStart": 71,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 90,
+                            "length": 49
+                        },
+                        "contentStart": 91,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 139,
+                            "length": 29
+                        },
+                        "contentStart": 140,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 168,
+                            "length": 30
+                        },
+                        "contentStart": 169,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 198,
+                            "length": 1
+                        },
+                        "contentStart": 197,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 20,
+                "end": 33,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 249
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 249,
+                            "length": 246
+                        },
+                        "contentStart": 252,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 495,
+                            "length": 170
+                        },
+                        "contentStart": 497,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 665,
+                            "length": 306
+                        },
+                        "contentStart": 667,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 971,
+                            "length": 104
+                        },
+                        "contentStart": 973,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1075,
+                            "length": 1
+                        },
+                        "contentStart": 1074,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 34,
+                "end": 48,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 70
+                        },
+                        "contentStart": 52,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 70,
+                            "length": 20
+                        },
+                        "contentStart": 73,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 90,
+                            "length": 26
+                        },
+                        "contentStart": 92,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 116,
+                            "length": 18
+                        },
+                        "contentStart": 118,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 134,
+                            "length": 27
+                        },
+                        "contentStart": 136,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 161,
+                            "length": 27
+                        },
+                        "contentStart": 163,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 188,
+                            "length": 28
+                        },
+                        "contentStart": 190,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 216,
+                            "length": 40
+                        },
+                        "contentStart": 218,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 256,
+                            "length": 38
+                        },
+                        "contentStart": 257,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 294,
+                            "length": 37
+                        },
+                        "contentStart": 295,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 331,
+                            "length": 46
+                        },
+                        "contentStart": 332,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 377,
+                            "length": 46
+                        },
+                        "contentStart": 378,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 423,
+                            "length": 1
+                        },
+                        "contentStart": 422,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
         },
         {
             "state": {
@@ -555,47 +578,7 @@
         {
             "state": {
                 "start": 63,
-                "end": 64,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 1
-                        },
-                        "contentStart": -1,
-                        "state": 3
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 65,
-                "end": 66,
-                "language": "mysql",
-                "currentHeight": 180,
-                "statements": [
-                    {
-                        "delimiter": ";",
-                        "span": {
-                            "start": 0,
-                            "length": 1
-                        },
-                        "contentStart": -1,
-                        "state": 3
-                    }
-                ]
-            },
-            "data": []
-        },
-        {
-            "state": {
-                "start": 67,
-                "end": 67,
+                "end": 63,
                 "language": "mysql",
                 "currentHeight": 180,
                 "statements": [
