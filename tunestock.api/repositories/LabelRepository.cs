@@ -7,6 +7,7 @@ using tunestock.api.dataAccess.interfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System.ComponentModel;
+using MySqlConnector;
 
 //Nombre del paquete al que pertenecen
 namespace tunestock.api.repositories;
@@ -54,23 +55,35 @@ public class LabelRepository : ILabelRepository{
 
     }
 
-    public async Task<Label> GetByID(int LabelID){
-        try{
+    public async Task<Label> GetByID(int LabelID)
+    {
+        try
+        {
             var label = await _dbContext.Connection.GetAsync<Label>(LabelID);
 
-            if(label == null){
+            if (label == null)
+            {
+                Console.WriteLine($"Label con ID {LabelID} no encontrado.");
                 return null;
             }
 
             Console.WriteLine("OBTENIDO CON EXITO - LabelRepository (GetByID)");
 
-            return label.IsDeleted == true ? null: label;
-
-        }catch(Exception ex){
-            Console.WriteLine("HA OCURRIDO UN ERROR - LabelRepository (GetByID)" + ex.StackTrace);
+            return label.IsDeleted ? null : label;
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine($"MySQL error - LabelRepository (GetByID): {ex.Message}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"HA OCURRIDO UN ERROR - LabelRepository (GetByID): {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
             return null;
         }
     }
+
 
     public async Task<Label> SaveAsync(Label label){
         try{

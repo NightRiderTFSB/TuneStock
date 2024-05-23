@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "3s9yI8EdcSr7QOe8mAoSz1giznJw23NFom/AkeyajBPmxLoMyq7fiAnMYlhFK2k/7ttih9nQl35UijJTtTG+OQ==",
+  "dgSpecHash": "gfQbq+mc+o6b/3tImMAWT0kUNpmmWHD4TaKN1FeJe9SR8hROgR6O7EtwwIqIpLUIbnWZPo4OvXamN+MnV1gWoA==",
   "success": true,
-  "projectFilePath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj",
+  "expectedPackageFiles": [
+    "/home/starryboy/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512"
+  ],
   "logs": []
 }

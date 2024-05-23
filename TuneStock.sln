@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tunestock.core", "tunestock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tunestock.tests", "tunestock.tests\tunestock.tests.csproj", "{76944D4E-FF20-4DB6-A072-63126A4D7552}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tunestock.webapp", "tunestock.webapp\tunestock.webapp.csproj", "{A6F85401-5934-45F8-9BD4-9A893E9EFA9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{76944D4E-FF20-4DB6-A072-63126A4D7552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76944D4E-FF20-4DB6-A072-63126A4D7552}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76944D4E-FF20-4DB6-A072-63126A4D7552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F85401-5934-45F8-9BD4-9A893E9EFA9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F85401-5934-45F8-9BD4-9A893E9EFA9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F85401-5934-45F8-9BD4-9A893E9EFA9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F85401-5934-45F8-9BD4-9A893E9EFA9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

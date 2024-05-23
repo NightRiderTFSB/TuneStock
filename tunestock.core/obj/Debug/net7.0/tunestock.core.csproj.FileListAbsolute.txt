@@ -10,3 +10,15 @@
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/obj/Debug/net7.0/refint/tunestock.core.dll
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.pdb
 /home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/obj/Debug/net7.0/ref/tunestock.core.dll
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/bin/Debug/net7.0/tunestock.core.deps.json
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/bin/Debug/net7.0/tunestock.core.dll
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/bin/Debug/net7.0/tunestock.core.pdb
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.GeneratedMSBuildEditorConfig.editorconfig
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.AssemblyInfoInputs.cache
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.AssemblyInfo.cs
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.csproj.CoreCompileInputs.cache
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.sourcelink.json
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.dll
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/refint/tunestock.core.dll
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/tunestock.core.pdb
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/Debug/net7.0/ref/tunestock.core.dll

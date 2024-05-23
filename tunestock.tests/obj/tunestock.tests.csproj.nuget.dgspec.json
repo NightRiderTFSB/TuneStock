@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.tests/tunestock.tests.csproj": {}
+    "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/tunestock.tests.csproj": {}
   },
   "projects": {
-    "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/tunestock.api.csproj": {
+    "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/tunestock.api.csproj",
-        "projectName": "tunestock.api",
-        "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/tunestock.api.csproj",
-        "packagesPath": "/home/starboyc00l/.nuget/packages/",
-        "outputPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/obj/",
+        "projectUniqueName": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj",
+        "projectName": "tunestock.core",
+        "projectPath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj",
+        "packagesPath": "/home/starryboy/.nuget/packages/",
+        "outputPath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/starboyc00l/.nuget/NuGet/NuGet.Config"
+          "/home/starryboy/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -37,16 +37,6 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[7.0.16, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -58,86 +48,36 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
             },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
             }
-          },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.116/RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj",
-        "projectName": "tunestock.core",
-        "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj",
-        "packagesPath": "/home/starboyc00l/.nuget/packages/",
-        "outputPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/obj/",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/home/starboyc00l/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/tunestock.api.csproj": {
-                "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.api/tunestock.api.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
           ],
-          "assetTargetFallback": true,
-          "warn": true,
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.116/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.104/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.tests/tunestock.tests.csproj": {
+    "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/tunestock.tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.tests/tunestock.tests.csproj",
+        "projectUniqueName": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/tunestock.tests.csproj",
         "projectName": "tunestock.tests",
-        "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.tests/tunestock.tests.csproj",
-        "packagesPath": "/home/starboyc00l/.nuget/packages/",
-        "outputPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.tests/obj/",
+        "projectPath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/tunestock.tests.csproj",
+        "packagesPath": "/home/starryboy/.nuget/packages/",
+        "outputPath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/starboyc00l/.nuget/NuGet/NuGet.Config"
+          "/home/starryboy/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -149,8 +89,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj": {
-                "projectPath": "/home/starboyc00l/Programming/dotNET/PROYECTO 2DO PARCIAL/TuneStock/tunestock.core/tunestock.core.csproj"
+              "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj": {
+                "projectPath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj"
               }
             }
           }
@@ -197,12 +137,22 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.116/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.104/RuntimeIdentifierGraph.json"
         }
       }
     }

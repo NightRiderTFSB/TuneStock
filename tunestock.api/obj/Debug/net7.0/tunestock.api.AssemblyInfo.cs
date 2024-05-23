@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tunestock.api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f58a46d3e0c7630193cf2c886b694e18f16b69ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("tunestock.api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tunestock.api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
