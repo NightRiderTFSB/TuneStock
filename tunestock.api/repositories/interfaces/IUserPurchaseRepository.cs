@@ -1,11 +1,12 @@
 //Importamos la entidad correspondiente
+
 using tunestock.core.entities;
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.repositories.interfaces;
 
-public interface IUserPurchaseRepository{
-
+public interface IUserPurchaseRepository
+{
     //Método asíncrono para guardar user purchase
     Task<UserPurchase> SaveAsync(UserPurchase userPurchase);
 
@@ -16,5 +17,4 @@ public interface IUserPurchaseRepository{
     Task<UserPurchase> GetByID(int ID);
 
     Task<List<UserPurchase>> IfExistsByUserID_FK(int userID_FK);
-
 }

@@ -1,11 +1,12 @@
 //Importamos la entidad correspondiente
+
 using tunestock.core.entities;
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.repositories.interfaces;
 
-public interface ISoundRepository{
-
+public interface ISoundRepository
+{
     //Método asíncrono para guardar Sound
     Task<Sound> SaveAsync(Sound sound, int labelId);
 
@@ -21,4 +22,5 @@ public interface ISoundRepository{
     //Método asíncrono PARA eliminar una Sound
     Task<bool> DeleteAsync(int ID);
 
+    Task<List<Sound>> GetByUser(int ID);
 }

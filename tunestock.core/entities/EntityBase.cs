@@ -1,9 +1,9 @@
-
 //Nombre del paquete al que pertenece esta clase
+
 namespace tunestock.core.entities;
 
-public abstract class EntityBase{
-
+public abstract class EntityBase
+{
     /*Esta clase permitirá construir objetos con esta clase "base"
     que nos proporciona los siguientes atributos base*/
 
@@ -18,5 +18,4 @@ public abstract class EntityBase{
     public string? UpdatedBy { get; set; }
 
     public DateTime UpdatedDate { get; set; }
-
 }

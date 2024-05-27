@@ -1,11 +1,12 @@
 //Importamos la entidad correspondiente
+
 using tunestock.core.entities;
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.repositories.interfaces;
 
-public interface ILabelRepository{
-
+public interface ILabelRepository
+{
     //Método asíncrono para guardar label
     Task<Label> SaveAsync(Label label);
 
@@ -20,5 +21,4 @@ public interface ILabelRepository{
 
     //Método asíncrono PARA eliminar una label
     Task<bool> DeleteAsync(int ID);
-
 }

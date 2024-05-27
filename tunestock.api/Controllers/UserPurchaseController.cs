@@ -1,69 +1,74 @@
 //Importamos la arquitectura MVC de dotNET
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
 
-//Importamos nuestras entidades, dtos y servicios
-using tunestock.core.entities;
-using tunestock.core.http;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using tunestock.api.dto;
 using tunestock.api.services.interfaces;
+using tunestock.core.http;
+//Importamos nuestras entidades, dtos y servicios
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.controllers;
 
 [ApiController] //Establece que la clase sera un controller
 [Route("api/[controller]")] //Establece la ruta del controller
-
-public class UserPurchaseController : ControllerBase{
-
+public class UserPurchaseController : ControllerBase
+{
     private readonly IUserPurchaseService _userPurchaseService; //Establecemos nuestras dependencias
     private readonly IValidator<InputUserPurchaseDto> _validator;
 
 
-    public UserPurchaseController(IUserPurchaseService userPurchaseService, IValidator<InputUserPurchaseDto> validator){
+    public UserPurchaseController(IUserPurchaseService userPurchaseService, IValidator<InputUserPurchaseDto> validator)
+    {
         _userPurchaseService = userPurchaseService; //Inyectamos la dependencia
         _validator = validator;
     }
 
     //END POINTS
     [HttpGet]
-    public async Task<ActionResult<Response<List<UserPurchaseDto>>>> GetAll([FromQuery] int userID_FK){
-
+    public async Task<ActionResult<Response<List<UserPurchaseDto>>>> GetAll([FromQuery] int userID_FK)
+    {
         var response = new Response<List<UserPurchaseDto>>();
 
-        try{
-            if(!await _userPurchaseService.IfExistsByUserID_FK(userID_FK)){
+        try
+        {
+            if (!await _userPurchaseService.IfExistsByUserID_FK(userID_FK))
+            {
                 response.Errors.Add("User not exists");
                 return NotFound(response);
             }
 
 
             response.Data = await _userPurchaseService.GetAllAsync(userID_FK);
-            
-            return Ok(response);
 
-        }catch(Exception ex){
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseController (GetAll): " + ex.Message);
             response.Errors.Add("HA OCURRIDO UN ERROR - UserPurchaseController (GetAll)");
             return StatusCode(500, response);
         }
-
     }
 
     [HttpPost]
-    public async Task<ActionResult<Response<UserPurchaseDto>>> Post([FromBody] InputUserPurchaseDto inputUserPurchaseDto){
-        
+    public async Task<ActionResult<Response<UserPurchaseDto>>> Post(
+        [FromBody] InputUserPurchaseDto inputUserPurchaseDto)
+    {
         var response = new Response<UserPurchaseDto>();
 
-        try{
+        try
+        {
             var validationResult = await _validator.ValidateAsync(inputUserPurchaseDto);
 
-            if(!validationResult.IsValid){
+            if (!validationResult.IsValid)
+            {
                 response.Errors.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
                 return BadRequest(response);
             }
 
-            UserPurchaseDto userPurchaseDto = new UserPurchaseDto(){
+            var userPurchaseDto = new UserPurchaseDto
+            {
                 PurchasedDate = inputUserPurchaseDto.PurchasedDate,
                 SoundPrice = inputUserPurchaseDto.SoundPrice,
                 PaymentStatus = inputUserPurchaseDto.PaymentStatus,
@@ -74,37 +79,37 @@ public class UserPurchaseController : ControllerBase{
 
             response.Data = await _userPurchaseService.SaveAsync(userPurchaseDto);
             return Created("/api/[controller]/{response.Data.ID}", response);
-
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseController (Post): " + ex.Message);
             response.Errors.Add("HA OCURRIDO UN ERROR - UserPurchaseController (Post)");
             return StatusCode(500, response);
-
         }
     }
 
     [HttpGet]
     [Route("{ID:int}")]
-    public async Task<ActionResult<Response<UserPurchaseDto>>> GetByID(int ID){
-
+    public async Task<ActionResult<Response<UserPurchaseDto>>> GetByID(int ID)
+    {
         var response = new Response<UserPurchaseDto>();
 
-        try{
-            if(!await _userPurchaseService.UserPurchaseExists(ID)){
+        try
+        {
+            if (!await _userPurchaseService.UserPurchaseExists(ID))
+            {
                 response.Errors.Add("userPurchase Not Found");
                 return NotFound(response);
             }
 
             response.Data = await _userPurchaseService.GetByID(ID);
             return Ok(response);
-
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - UserPurchaseController (GetByID): " + ex.Message);
             response.Errors.Add("HA OCURRIDO UN ERROR - UserPurchaseController (GetByID)");
             return StatusCode(500, response);
-
         }
     }
-
-
 }

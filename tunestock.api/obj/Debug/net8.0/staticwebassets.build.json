@@ -1,0 +1,50 @@
+{
+  "Version": 1,
+  "Hash": "mYKs0jdiSnI1loSPzDzQyLZQJuYpfNzR6iZAAXzpC6U=",
+  "Source": "tunestock.api",
+  "BasePath": "_content/tunestock.api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [
+    {
+      "Identity": "/home/starryboy/.nuget/packages/blazored.toast/4.2.0/staticwebassets/Blazored.Toast.bundle.scp.css",
+      "SourceId": "Blazored.Toast",
+      "SourceType": "Package",
+      "ContentRoot": "/home/starryboy/.nuget/packages/blazored.toast/4.2.0/staticwebassets/",
+      "BasePath": "_content/Blazored.Toast",
+      "RelativePath": "Blazored.Toast.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/starryboy/.nuget/packages/blazored.toast/4.2.0/staticwebassets/Blazored.Toast.bundle.scp.css"
+    },
+    {
+      "Identity": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/scopedcss/bundle/tunestock.api.styles.css",
+      "SourceId": "tunestock.api",
+      "SourceType": "Computed",
+      "ContentRoot": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/scopedcss/bundle/",
+      "BasePath": "_content/tunestock.api",
+      "RelativePath": "tunestock.api.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/scopedcss/bundle/tunestock.api.styles.css"
+    }
+  ]
+}

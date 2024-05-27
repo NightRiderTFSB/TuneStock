@@ -1,0 +1,103 @@
+@page "/addlabel"
+
+@inject ILabelService _labelService
+
+
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Sockets
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.Label
+
+<NavBar></NavBar>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="max-height: 100vh;">
+        <div class="col-12 col-md-8 col-lg-6">
+            <br/>
+            <h1 class="text-center">AÑADIR ETIQUETA!</h1>
+            <br/>
+            <EditForm Model="@labelModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group">
+                    <label for="labelname">Etiqueta:</label>
+                    <InputText id="labelname" @bind-Value="@labelModel.labelname" class="form-control"/>
+                    <ValidationMessage For="@(() => labelModel.labelname)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="description">Descripcion:</label>
+                    <InputText id="description" @bind-Value="@labelModel.description" class="form-control"/>
+                    <ValidationMessage For="@(() => labelModel.description)"/>
+                </div>
+                <br/>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">ACEPTAR</button>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    LabelModel labelModel = new LabelModel();
+    
+    [Inject] NavigationManager NavigationManager { get; set; }
+    
+    private class LabelModel {
+
+        [Required(ErrorMessage = "La etiqueta debe tener un nombre.")]
+        public string labelname { get; set; }
+
+        [Required(ErrorMessage = "La etiqueta debe tener una decripcion.")]
+        public string description { get; set; }
+        
+        
+        
+    }
+
+    private async void HandleValidSubmit() {
+        if (await PerformLabel(labelModel)) {
+            Console.WriteLine("CREADA CORRECTAMENTE SARABAMBICHE");
+            NavigationManager.NavigateTo("/labels");
+        }
+    }
+
+    private async Task<bool> PerformLabel(LabelModel labelModel) {
+        try {
+
+            LabelDto labelDto = new LabelDto();
+            labelDto.Labelname = labelModel.labelname;
+            labelDto.Description = labelModel.description;
+            
+            Response<LabelDto> response = await _labelService.SaveAsync(labelDto);
+
+            if (response.Data == null) {
+                Console.WriteLine("Errores: " + string.Join(", ", response.Errors));
+                return false;
+            }
+
+            return true;
+        }
+        catch (HttpRequestException ex) {
+            Console.WriteLine("Error de solicitud HTTP: " + ex.Message);
+            // Manejar el error de solicitud HTTP específicamente
+        }
+        catch (SocketException ex) {
+            Console.WriteLine("Error de socket: " + ex.Message);
+            // Manejar el error de socket específicamente
+        }
+        catch (Exception ex) {
+            Console.WriteLine("Ha ocurrido un error inesperado: " + ex.Message);
+            // Manejar cualquier otro error de manera genérica
+        }
+
+        return false;
+    }
+}

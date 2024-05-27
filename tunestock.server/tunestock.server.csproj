@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\tunestock.api\tunestock.api.csproj" />
+      <ProjectReference Include="..\tunestock.core\tunestock.core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazored.Toast" Version="4.2.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Features\Sounds\LoadSound.razor" />
+    </ItemGroup>
+
+</Project>

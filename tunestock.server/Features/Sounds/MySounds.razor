@@ -1,0 +1,75 @@
+@page "/mysounds"
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+@inject ISoundService _soundService
+@inject UserSession _userSession
+
+@inject NavigationManager Navigation
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">MIS SONIDOS!</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Premium</th>
+                            <th>Precio</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var mysound in mysounds) {
+                        <tr>
+                            <td>@mysound.SoundName</td>
+                            <td>@mysound.IsPremiun</td>
+                            <td>@mysound.Price</td>
+                            <td>
+                                <a @onclick="() => EditSound(mysound.ID)" class="btn btn-primary" role="button">Editar</a>
+                                <button @onclick="() => DeleteSound(mysound.ID)" class="btn btn-danger">Eliminar!</button>
+                            </td>
+                        </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<SoundDto> mysounds = new List<SoundDto>();
+
+    protected override async Task OnInitializedAsync() {
+        Response<List<SoundDto>> response = await _soundService.GetByUser(_userSession.CurrentUser.ID);
+        mysounds = response.Data;
+    }
+
+    private void EditSound(int ID) {
+        Navigation.NavigateTo($"/editsound/{ID}");
+    }
+
+    private async Task DeleteSound(int ID) {
+        var response = await _soundService.DeleteAsync(ID);
+        Console.WriteLine("ELIMINADO CON EXITO");
+        if (response.Data) {
+            mysounds = mysounds.Where(sound => sound.ID != ID).ToList();
+            
+        }
+    }
+
+}

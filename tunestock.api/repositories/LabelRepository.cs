@@ -1,58 +1,58 @@
 //Importamos las entidades, interfaces y el dataaccess
-using tunestock.core.entities;
-using tunestock.api.repositories.interfaces;
-using tunestock.api.dataAccess.interfaces;
 
-//Importamos dapper y dapper.contrib
 using Dapper;
 using Dapper.Contrib.Extensions;
-using System.ComponentModel;
 using MySqlConnector;
+using tunestock.api.dataAccess.interfaces;
+using tunestock.api.repositories.interfaces;
+using tunestock.core.entities;
+//Importamos dapper y dapper.contrib
 
 //Nombre del paquete al que pertenecen
 namespace tunestock.api.repositories;
 
-public class LabelRepository : ILabelRepository{
-
+public class LabelRepository : ILabelRepository
+{
     private readonly IDbContext _dbContext;
 
-    public LabelRepository(IDbContext context){
+    public LabelRepository(IDbContext context)
+    {
         _dbContext = context;
     }
 
-    public async Task<bool> DeleteAsync(int ID){
-        
-        try{
+    public async Task<bool> DeleteAsync(int ID)
+    {
+        try
+        {
             var label = await GetByID(ID);
 
-            if(label == null){
-                return false;
-            }
+            if (label == null) return false;
 
             label.IsDeleted = true;
             Console.WriteLine("ELIMINADO CORRECTAMENTE - LabelRepository (DeleteAsync)");
             return await _dbContext.Connection.UpdateAsync(label);
-
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - LabelRepository (DeleteAsync): " + ex.StackTrace);
             return false;
         }
-
     }
 
-    public async Task<List<Label>> GetAllAsync(){
-        
-        try{
+    public async Task<List<Label>> GetAllAsync()
+    {
+        try
+        {
             const string query = "SELECT * FROM Labels WHERE IsDeleted = 0";
             var labels = await _dbContext.Connection.QueryAsync<Label>(query);
             Console.WriteLine("OBTENIDOS CON EXITO - LabelRepository (GetAllAsync)");
             return labels.ToList();
-
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - LabelRepository (GetAllAsync)" + ex.StackTrace);
             return null;
         }
-
     }
 
     public async Task<Label> GetByID(int LabelID)
@@ -85,13 +85,16 @@ public class LabelRepository : ILabelRepository{
     }
 
 
-    public async Task<Label> SaveAsync(Label label){
-        try{
+    public async Task<Label> SaveAsync(Label label)
+    {
+        try
+        {
             label.ID = await _dbContext.Connection.InsertAsync(label);
             Console.WriteLine("GUARDADO CORRECTAMENTE - LabelRepository (SaveAsync)");
             return label;
-
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - LabelRepository (SaveAsync): " + ex.StackTrace);
             return null;
         }
@@ -99,15 +102,16 @@ public class LabelRepository : ILabelRepository{
 
     public async Task<Label> UpdateAsync(Label label)
     {
-        try{
+        try
+        {
             await _dbContext.Connection.UpdateAsync(label);
             Console.WriteLine("ACTUALIZADO CORRECTAMENTE - LabelRepository (UpdateAsync)");
             return label;
-            
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine("HA OCURRIDO UN ERROR - LabelRepository (UpdateAsync): " + ex.StackTrace);
             return null;
         }
     }
-
 }

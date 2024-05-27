@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+@inject DialogService DialogService
+
+@code {
+    private RenderFragment? DialogFragment;
+
+    protected override void OnInitialized()
+    {
+        DialogService.OnShow += ShowDialog;
+        DialogService.OnClose += CloseDialog;
+    }
+
+    private void ShowDialog(RenderFragment dialogFragment)
+    {
+        DialogFragment = dialogFragment;
+        StateHasChanged();
+    }
+
+    private void CloseDialog()
+    {
+        DialogFragment = null;
+        StateHasChanged();
+    }
+
+    private async Task HandleDialogClose(bool result)
+    {
+        DialogService.CloseDialog(result);
+    }
+}
+
+<div class="main">
+    <div class="top-row px-30 d-flex justify-content-center">
+        <b>TUNESTOCK</b>
+    </div>
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@if (DialogFragment != null)
+{
+    <Dialog OnClose="HandleDialogClose">
+        @DialogFragment
+    </Dialog>
+}
+
+
+

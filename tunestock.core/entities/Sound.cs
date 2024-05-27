@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tunestock.core.entities;
 
 [Table("Sound")]
-public class Sound : EntityBase {
-
+public class Sound : EntityBase
+{
     public int UserID { get; set; }
 
     public string? SoundName { get; set; }
@@ -15,5 +15,4 @@ public class Sound : EntityBase {
     public bool IsPremiun { get; set; }
 
     public double Price { get; set; }
-
 }

@@ -5,10 +5,22 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:33849",
-      "sslPort": 44345
+      "sslPort": 44345,
+      "sslPfxPassword": "e03b4a16-e854-4c50-8b8e-08cd50eff35c"
     }
   },
   "profiles": {
+
+    "Development": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7000;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sslPfxPath": "Certificates\\aspnetapp.pfx"
+    },
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,

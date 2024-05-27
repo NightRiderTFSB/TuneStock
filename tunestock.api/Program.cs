@@ -1,11 +1,15 @@
 //Importamos nuestros paquetes
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using System.Security.Cryptography.X509Certificates;
 using FluentValidation;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using tunestock.api.dataAccess.interfaces;
 using tunestock.api.repositories;
 using tunestock.api.repositories.interfaces;
 using tunestock.api.services;
 using tunestock.api.services.interfaces;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,3 +54,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static IHostBuilder CreateWebHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Program>();
+        });

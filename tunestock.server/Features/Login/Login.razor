@@ -1,0 +1,104 @@
+@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.User
+
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject UserSession userSession
+
+<PageTitle>TuneStock!</PageTitle>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="max-height: 100vh;">
+        <div class="col-12 col-md-8 col-lg-6">
+            <br/>
+            <h1 class="text-center">INICIAR SESIÓN</h1>
+            <br/>
+            <EditForm Model="@loginModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group">
+                    <label for="username">Correo electrónico:</label>
+                    <InputText id="username" @bind-Value="@loginModel.Email" class="form-control"/>
+                    <ValidationMessage For="@(() => loginModel.Email)"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <InputText id="password" @bind-Value="@loginModel.Password" type="password" class="form-control"/>
+                    <ValidationMessage For="@(() => loginModel.Password)"/>
+                </div>
+                <br/>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    <button class="btn btn-secondary" @onclick="Signup">Registrarse</button>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private class LoginModel
+    {
+        [Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        public string Password { get; set; }
+    }
+
+    private async Task<bool> PerformLogin(LoginModel loginModel)
+    {
+        try
+        {
+            var userDto = new UserDto
+            {
+                Email = loginModel.Email,
+                Password = loginModel.Password
+            };
+
+            var response = await UserService.Login(userDto);
+            
+            
+            if (response.Data)
+            {
+                var usr = await UserService.GetByEmail(userDto);
+                userSession.SetSession(usr.Data);
+                Console.WriteLine("LOGIN EXITOSO - " + userSession.CurrentUser.ID);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("LOGIN FALLIDO: " + string.Join(", ", response.Errors));
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("HA OCURRIDO UN ERROR AL INTENTAR INICIAR SESION: " + e.Message);
+            return false;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (await PerformLogin(loginModel))
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+
+    private void Signup()
+    {
+        NavigationManager.NavigateTo("/signup");
+    }
+    
+}

@@ -1,0 +1,156 @@
+@page "/uploadSound"
+@inject ISoundService SoundService
+@inject UserSession userSession
+
+
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Sockets
+
+@using tunestock.api.dto
+@using tunestock.core.entities
+@using tunestock.core.http
+@using tunestock.server.Services.Label
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+
+<NavBar></NavBar>
+<br/>
+
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="max-height: 100vh;">
+        <div class="col-12 col-md-8 col-lg-6">
+            <br/>
+            <h1 class="text-center">CARGAR SONIDO!</h1>
+            <br/>
+            <EditForm Model="@soundModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group">
+                    <label for="soundName">Nombre del sonido:</label>
+                    <InputText id="soundName" @bind-Value="@soundModel.SoundName" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.SoundName)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="file">Archivo:</label>
+                    <InputText id="file" @bind-Value="@soundModel.File" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.SoundName)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="premium">Es Premium:</label>
+                    <InputCheckbox id="premium" @bind-Value="soundModel.IsPremiun"/>
+                    <ValidationMessage For="@(() => soundModel.IsPremiun)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <InputNumber id="precio" @bind-Value="@soundModel.Price" type="password" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.Price)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="category">Categoría:</label>
+                    <InputSelect id="category" @bind-Value="soundModel.Label" class="form-control">
+                        @foreach (var label in Labels) {
+                            <option value="@label">@label.Labelname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => soundModel.Label)"/>
+                </div>
+                <br/>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">ACEPTAR</button>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    //Entidad del modelo
+    private SoundModel soundModel = new SoundModel();
+
+    public List<LabelDto> Labels = new List<LabelDto>();
+
+    //Inyección de dependencias
+    [Inject] ISoundService _SoundService { get; set; }
+    [Inject] ILabelService _labelService { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        // Llamamos al método del servicio para obtener las etiquetas y las asignamos a la lista Labels
+        Response<List<LabelDto>> response = await _labelService.GetAllAsync();
+        Labels = response.Data;
+    }
+
+    //Definicion del modelo
+    private class SoundModel {
+        [Required(ErrorMessage = "El sonido debe tener un nombre.")]
+        public string SoundName { get; set; }
+
+        [Required(ErrorMessage = "El sonido debe tener un archivo nmms.")]
+        public string File { get; set; }
+
+        [Required(ErrorMessage = "Será Free por defecto.")]
+        public bool IsPremiun { get; set; }
+
+        [Required(ErrorMessage = "Debe tener un precio si es Premium.")]
+        public double Price { get; set; }
+
+        [Required(ErrorMessage = "Debe tener una etiqueta")]
+        public LabelDto Label { get; set; }
+    }
+
+    //Manejar la validación del formulario
+    private async void HandleValidSubmit() {
+        if (await PerformSound(soundModel)) {
+            Console.WriteLine("CARGADO CON EXITO SARABAMBICHE");
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+
+    private async Task<bool> PerformSound(SoundModel soundModel) {
+        try {
+            SoundDto soundDto = new SoundDto();
+            soundDto.UserID = userSession.CurrentUser.ID;
+            soundDto.SoundName = soundModel.SoundName;
+            soundDto.File = soundModel.File;
+            soundDto.IsPremiun = soundModel.IsPremiun;
+            soundDto.Price = soundModel.Price;
+
+            Response<SoundDto> response = await _SoundService.SaveAsync(soundDto, soundModel.Label.ID);
+
+            if (response.Data == null) {
+                Console.WriteLine("Errores: " + string.Join(", ", response.Errors));
+                return false;
+            }
+
+            return true;
+        }
+        catch (HttpRequestException ex) {
+            Console.WriteLine("Error de solicitud HTTP: " + ex.Message);
+            // Manejar el error de solicitud HTTP específicamente
+        }
+        catch (SocketException ex) {
+            Console.WriteLine("Error de socket: " + ex.Message);
+            // Manejar el error de socket específicamente
+        }
+        catch (Exception ex) {
+            Console.WriteLine("Ha ocurrido un error inesperado: " + ex.Message);
+            // Manejar cualquier otro error de manera genérica
+        }
+
+        return false;
+    }
+
+}

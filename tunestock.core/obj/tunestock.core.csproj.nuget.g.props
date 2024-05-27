@@ -7,9 +7,12 @@
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/home/starryboy/.nuget/packages/</NuGetPackageRoot>
     <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/home/starryboy/.nuget/packages/</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.9.1</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.10.0</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="/home/starryboy/.nuget/packages/" />
   </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)blazored.toast/4.2.0/buildTransitive/Blazored.Toast.props" Condition="Exists('$(NuGetPackageRoot)blazored.toast/4.2.0/buildTransitive/Blazored.Toast.props')" />
+  </ImportGroup>
 </Project>

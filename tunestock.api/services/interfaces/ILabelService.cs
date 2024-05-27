@@ -1,11 +1,12 @@
 //Importación del DTO correspondiente
+
 using tunestock.api.dto;
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.services.interfaces;
 
-public interface ILabelService {
-
+public interface ILabelService
+{
     Task<bool> LabelExists(int ID);
 
     Task<List<LabelDto>> GetAllAsync();
@@ -17,5 +18,4 @@ public interface ILabelService {
     Task<LabelDto> UpdateAsync(LabelDto label);
 
     Task<bool> DeleteAsync(int ID);
-
 }

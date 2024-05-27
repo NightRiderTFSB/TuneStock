@@ -23,13 +23,13 @@ VALUES ('Synthwave Guitar Riff', 'A guitar riff with synthwave vibes', FALSE, 'S
 INSERT INTO User (Username, Email, Password, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)
 VALUES ('SarboyCool', 'StarboyCool@outlook.com', 'StarboyCool', FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());
 
-CALL InsertSoundAndLabel(1, 'Synthwave Guitar Riff', '/SynthGuitarRiff.mp3', TRUE, 10.50, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP(), 2);
+CALL InsertSoundAndLabel(1, 'Synthwave Guitar Riff', '/SynthGuitarRiff.mp3', TRUE, 10.50, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP(), 1);
 
 INSERT INTO UserPurchases (PurchasedDate, SoundPrice, PaymentStatus, PaymentMethod, UserID_FK, SoundID_FK, IsDeleted, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate)
-VALUES (CURRENT_TIMESTAMP(), 10.50, TRUE, 'CREDIT CARD', 2, 2, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());
+VALUES (CURRENT_TIMESTAMP(), 10.50, TRUE, 'CREDIT CARD', 1, 1, FALSE, 'Starryboy', CURRENT_TIMESTAMP(), 'Starryboy', CURRENT_TIMESTAMP());
 
-    INSERT INTO UserDownloads (SoundID_FK, UserID_FK, DownloadedDate)
-    VALUES (2, 2, CURRENT_TIMESTAMP());
+INSERT INTO UserDownloads (SoundID_FK, UserID_FK, DownloadedDate)
+VALUES (1, 1, CURRENT_TIMESTAMP());
 
 -- WARNING DON'T BE DUMB -------------------------
 DELETE FROM Labels;

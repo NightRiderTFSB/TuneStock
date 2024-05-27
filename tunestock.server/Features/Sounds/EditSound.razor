@@ -1,0 +1,181 @@
+@page "/editsound/{ID:int}"
+
+@inject UserSession userSession
+
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Sockets
+@using Newtonsoft.Json
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.Label
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+
+<NavBar></NavBar>
+<br/>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="max-height: 100vh;">
+        <div class="col-12 col-md-8 col-lg-6">
+            <br/>
+            <h1 class="text-center">EDITAR SONIDO</h1>
+            <br/>
+            <EditForm Model="@soundModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group">
+                    <label for="soundName">Nombre del sonido:</label>
+                    <InputText id="soundName" @bind-Value="@soundModel.SoundName" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.SoundName)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="file">Archivo:</label>
+                    <InputText id="file" @bind-Value="@soundModel.File" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.File)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="premium">Es Premium:</label>
+                    <InputCheckbox id="premium" @bind-Value="soundModel.IsPremiun"/>
+                    <ValidationMessage For="@(() => soundModel.IsPremiun)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <InputNumber id="precio" @bind-Value="@soundModel.Price" class="form-control"/>
+                    <ValidationMessage For="@(() => soundModel.Price)"/>
+                </div>
+                <br/>
+
+                <div class="form-group">
+                    <label for="category">Categoría:</label>
+                    <InputSelect id="category" @bind-Value="soundModel.LabelID" class="form-control">
+                        @foreach (var label in Labels) {
+                            <option value="@label.ID">@label.Labelname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => soundModel.LabelID)"/>
+                </div>
+                <br/>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">ACEPTAR</button>
+                    <button type="button" class="btn btn-secondary" @onclick="Cancel">CANCELAR</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int ID { get; set; }
+    
+    [Inject] ISoundService _SoundService { get; set; }
+    [Inject] ILabelService _labelService { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private SoundModel soundModel = new SoundModel();
+    public List<LabelDto> Labels = new List<LabelDto>();
+
+    protected override async Task OnInitializedAsync() {
+        Response<List<LabelDto>> labelResponse = await _labelService.GetAllAsync();
+        Labels = labelResponse.Data;
+
+        var soundResponse = await _SoundService.GeyByID(ID);
+        
+        if (soundResponse.Data != null) {
+            var soundDto = soundResponse.Data;
+            soundModel = new SoundModel {
+                ID = soundDto.ID,
+                SoundName = soundDto.SoundName,
+                File = soundDto.File,
+                IsPremiun = soundDto.IsPremiun,
+                Price = soundDto.Price
+            };
+        }
+    }
+
+    private async Task HandleValidSubmit() {
+        if (await UpdateSound(soundModel)) {
+            NavigationManager.NavigateTo("/mysounds");
+        }
+    }
+
+    private async Task<bool> UpdateSound(SoundModel soundModel) {
+        try {
+            SoundDto soundDto = new SoundDto {
+                ID = soundModel.ID,
+                SoundName = soundModel.SoundName,
+                File = soundModel.File,
+                IsPremiun = soundModel.IsPremiun,
+                Price = soundModel.Price,
+                UserID = userSession.CurrentUser.ID
+            };
+
+            Console.WriteLine("ID: " + soundDto.ID);
+            
+            Response<SoundDto> response = await _SoundService.UpdateAsync(soundDto);
+            
+            if (response.Data == null) {
+                Console.WriteLine("Error: La respuesta del servicio no contiene datos.");
+                return false;
+            }
+
+            return true;
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine("Error de solicitud HTTP al actualizar sonido: " + ex.Message);
+            return false;
+        }
+        catch (SocketException ex)
+        {
+            Console.WriteLine("Error de socket al actualizar sonido: " + ex.Message);
+            return false;
+        }
+        catch (TimeoutException ex)
+        {
+            Console.WriteLine("Error de tiempo de espera al actualizar sonido: " + ex.Message);
+            return false;
+        }
+        catch (JsonSerializationException ex)
+        {
+            Console.WriteLine("Error de deserialización JSON al actualizar sonido: " + ex.Message);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("HA OCURRIDO UN ERROR AL ACTUALIZAR SONIDO: " + ex.Message);
+            return false;
+        }
+    }
+
+    private void Cancel() {
+        NavigationManager.NavigateTo("/sounds");
+    }
+
+    private class SoundModel {
+        public int ID { get; set; }
+
+        [Required(ErrorMessage = "El sonido debe tener un nombre.")]
+        public string SoundName { get; set; }
+
+        [Required(ErrorMessage = "El sonido debe tener un archivo.")]
+        public string File { get; set; }
+
+        [Required(ErrorMessage = "Especificar si es premium.")]
+        public bool IsPremiun { get; set; }
+
+        [Required(ErrorMessage = "Debe tener un precio si es premium.")]
+        public double Price { get; set; }
+
+        [Required(ErrorMessage = "Debe tener una etiqueta.")]
+        public int LabelID { get; set; } // Cambiado a int para almacenar el ID de la etiqueta
+    }
+
+}

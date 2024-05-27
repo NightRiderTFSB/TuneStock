@@ -1,11 +1,12 @@
 //Importamos la entidad correspondiente
+
 using tunestock.core.entities;
 
 //Nombre del paquete al que pertenece la clase
 namespace tunestock.api.repositories.interfaces;
 
-public interface IUserRepository{
-    
+public interface IUserRepository
+{
     //Método asíncrono para guardar user
     Task<User> SaveAsync(User user);
 
@@ -21,4 +22,7 @@ public interface IUserRepository{
     //Método asíncrono PARA eliminar una user
     Task<bool> DeleteAsync(int ID);
 
+    Task<bool> Login(User user);
+    
+    Task<User> GetByEmail(User user);
 }

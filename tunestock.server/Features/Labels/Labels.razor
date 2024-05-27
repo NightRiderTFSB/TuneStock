@@ -1,0 +1,79 @@
+@page "/labels"
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.Label
+@inject ILabelService _labelService
+@inject NavigationManager Navigation
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">ETIQUETAS!</h1>
+            <br/>
+
+            <div class="row">
+                <button class="btn btn-secondary" @onclick="() => NavigateAddLabel()">Añadir nueva etiqueta!</button>
+            </div>
+            <br/>
+            
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Etiqueta</th>
+                            <th>Descripcion</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var label in labels) {
+                            <tr>
+                                <td>@label.Labelname</td>
+                                <td>@label.Description</td>
+                                <td>
+                                    <a @onclick="() => EditLabel(label.ID)" class="btn btn-primary" role="button">Editar</a>
+                                    <button @onclick="() => DeleteLabel(label.ID)" class="btn btn-danger">Eliminar!</button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<LabelDto> labels = new List<LabelDto>();
+
+    protected override async Task OnInitializedAsync() {
+        Response<List<LabelDto>> response = await _labelService.GetAllAsync();
+        labels = response.Data;
+    }
+
+    private void EditLabel(int id) {
+        Navigation.NavigateTo($"/editlabel/{id}");
+    }
+
+    private async Task DeleteLabel(int id) {
+        var response = await _labelService.DeleteAsync(id);
+        Console.WriteLine("ELIMINADO CON EXITO");
+        if (response.Data) {
+            labels = labels.Where(label => label.ID != id).ToList();
+            
+        }
+    }
+
+    public void NavigateAddLabel() {
+        Navigation.NavigateTo("/addlabel");
+    }
+
+}

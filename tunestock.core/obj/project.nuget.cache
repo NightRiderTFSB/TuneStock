@@ -1,11 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "gfQbq+mc+o6b/3tImMAWT0kUNpmmWHD4TaKN1FeJe9SR8hROgR6O7EtwwIqIpLUIbnWZPo4OvXamN+MnV1gWoA==",
+  "dgSpecHash": "tSq62kD3KnI=",
   "success": true,
   "projectFilePath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.core/tunestock.core.csproj",
   "expectedPackageFiles": [
-    "/home/starryboy/.nuget/packages/microsoft.netcore.app.ref/7.0.18/microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.18/microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512"
+    "/home/starryboy/.nuget/packages/blazored.toast/4.2.0/blazored.toast.4.2.0.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.authorization/8.0.2/microsoft.aspnetcore.authorization.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.components/8.0.2/microsoft.aspnetcore.components.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.components.analyzers/8.0.2/microsoft.aspnetcore.components.analyzers.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.components.forms/8.0.2/microsoft.aspnetcore.components.forms.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.components.web/8.0.2/microsoft.aspnetcore.components.web.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.aspnetcore.metadata/8.0.2/microsoft.aspnetcore.metadata.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.jsinterop/8.0.2/microsoft.jsinterop.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }
