@@ -149,4 +149,15 @@ public class SoundService : ISoundService
             return null;
         }
     }
+    
+    public async Task<List<SoundDto>> GetBySoundIds(List<int> soundIds) {
+        try {
+            var sounds = await _soundRepository.GetBySoundIds(soundIds);
+            var soundsDto = sounds.Select(l => new SoundDto(l)).ToList();
+            return soundsDto;
+        } catch (Exception ex) {
+            Console.WriteLine("HA OCURRIDO UN ERROR - SoundService (GetBySoundIds):" + ex.StackTrace);
+            return null;
+        }
+    }
 }

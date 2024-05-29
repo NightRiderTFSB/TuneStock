@@ -18,6 +18,11 @@
             <br/>
 
             <div class="row">
+                <button class="btn btn-secondary" @onclick="() => NavigateLoadSound()">Añadir nuevo sonido!</button>
+            </div>
+            <br/>
+
+            <div class="row">
                 <div class="col-10 mx-auto">
                     <table class="table">
                         <thead>
@@ -70,6 +75,10 @@
             mysounds = mysounds.Where(sound => sound.ID != ID).ToList();
             
         }
+    }
+
+    public void NavigateLoadSound() {
+        Navigation.NavigateTo("/uploadSound");
     }
 
 }

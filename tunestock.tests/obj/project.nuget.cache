@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lwZYluWOTLV7690L+unaBcfAGZObey2F6BeDfq3Qgjv03MvbsxAeY7eaHHGs7OHYUnT66QCxnbwmndHNDdTzEg==",
+  "dgSpecHash": "9sTs8a06kJcvH0rYNW/RNluvqW4P0cUGdbJ8DPxJDw5gsfiKbStnBFumwJRP5rDObdpZo2fK00HStEOz+GVuRg==",
   "success": true,
   "projectFilePath": "/home/starryboy/Starcode/dotNET/TuneStock/tunestock.tests/tunestock.tests.csproj",
   "expectedPackageFiles": [
@@ -18,7 +18,7 @@
     "/home/starryboy/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "/home/starryboy/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
     "/home/starryboy/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
-    "/home/starryboy/.nuget/packages/microsoft.jsinterop/8.0.2/microsoft.jsinterop.8.0.2.nupkg.sha512",
+    "/home/starryboy/.nuget/packages/microsoft.jsinterop/8.0.5/microsoft.jsinterop.8.0.5.nupkg.sha512",
     "/home/starryboy/.nuget/packages/microsoft.net.test.sdk/17.3.2/microsoft.net.test.sdk.17.3.2.nupkg.sha512",
     "/home/starryboy/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "/home/starryboy/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",

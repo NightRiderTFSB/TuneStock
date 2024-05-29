@@ -23,4 +23,6 @@ public interface ISoundRepository
     Task<bool> DeleteAsync(int ID);
 
     Task<List<Sound>> GetByUser(int ID);
+    
+    Task<List<Sound>> GetBySoundIds(List<int> soundIds); 
 }

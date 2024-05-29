@@ -2,9 +2,10 @@ using tunestock.api.dto;
 
 namespace tunestock.server.Services.User;
 
-public class UserSession
-{
-    public core.entities.User CurrentUser { get; set; }
+public class UserSession {
+    public core.entities.User CurrentUser { get; set; } = new core.entities.User {
+        Admin = false
+    };
 
     public event Action OnChange;
 

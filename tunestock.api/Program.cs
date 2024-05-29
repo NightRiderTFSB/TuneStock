@@ -34,6 +34,8 @@ builder.Services.AddScoped<IUserPurchaseService, UserPurchaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISoundService, SoundService>();
 
+
+
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddFluentValidationAutoValidation();
 

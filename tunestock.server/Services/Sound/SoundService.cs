@@ -36,12 +36,15 @@ public class SoundService : ISoundService
     public async Task<Response<SoundDto>> SaveAsync(SoundDto soundDto, int label)
     {
         var url = $"{_baseURL}{_endpoint}?labelId={label}";
+        Console.WriteLine("URL: " + url);
         var jsonRequest = JsonConvert.SerializeObject(soundDto);
         var content = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
         var client = new HttpClient();
         var res = await client.PostAsync(url, content);
         var json = await res.Content.ReadAsStringAsync();
 
+        Console.WriteLine("JSON Response: " + json); // Imprime el JSON
+        
         var response = JsonConvert.DeserializeObject<Response<SoundDto>>(json);
 
         return response;
@@ -83,6 +86,17 @@ public class SoundService : ISoundService
 
         var response = JsonConvert.DeserializeObject < Response<List<SoundDto>>>(json);
 
+        return response;
+    }
+    
+    public async Task<Response<List<SoundDto>>> GetBySoundIds(List<int> soundIds) {
+        var url = $"{_baseURL}{_endpoint}/bysoundids";
+        var client = new HttpClient();
+        var jsonRequest = JsonConvert.SerializeObject(soundIds);
+        var content = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
+        var res = await client.PostAsync(url, content);
+        var json = await res.Content.ReadAsStringAsync();
+        var response = JsonConvert.DeserializeObject<Response<List<SoundDto>>>(json);
         return response;
     }
 }

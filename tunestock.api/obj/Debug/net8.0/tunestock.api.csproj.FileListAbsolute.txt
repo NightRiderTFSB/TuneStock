@@ -4,9 +4,6 @@
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.staticwebassets.runtime.json
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.deps.json
-/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.runtimeconfig.json
-/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.dll
-/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.pdb
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/Blazored.Toast.dll
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/Dapper.dll
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/Dapper.Contrib.dll
@@ -52,4 +49,7 @@
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/refint/tunestock.api.dll
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/tunestock.api.pdb
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/tunestock.api.genruntimeconfig.cache
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.runtimeconfig.json
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.dll
+/home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/bin/Debug/net8.0/tunestock.api.pdb
 /home/starryboy/Starcode/dotNET/TuneStock/tunestock.api/obj/Debug/net8.0/ref/tunestock.api.dll

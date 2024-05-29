@@ -20,4 +20,6 @@ public interface ISoundService
     Task<bool> DeleteAsync(int ID);
     
     Task<List<SoundDto>> GetByUser(int ID);
+    
+    Task<List<SoundDto>> GetBySoundIds(List<int> soundIds);
 }

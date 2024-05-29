@@ -28,6 +28,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Downloads/MyDownloads.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvRG93bmxvYWRzL015RG93bmxvYWRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Home/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvSG9tZS9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -48,12 +52,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvTmF2QmFyL05hdkJhci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Purchases/MyPurchases.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHVyY2hhc2VzL015UHVyY2hhc2VzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Sounds/EditSound.razor]
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvU291bmRzL0VkaXRTb3VuZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Sounds/EverySounds.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvU291bmRzL0V2ZXJ5U291bmRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Sounds/MySounds.razor]
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvU291bmRzL015U291bmRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Users/AllUsers.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvVXNlcnMvQWxsVXNlcnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Users/EditUser.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvVXNlcnMvRWRpdFVzZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/starryboy/Starcode/dotNET/TuneStock/tunestock.server/Features/Users/NewUser.razor]

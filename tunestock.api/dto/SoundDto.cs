@@ -25,7 +25,7 @@ public class SoundDto : DtoBase
     public int UserID { get; set; }
     public string? SoundName { get; set; }
 
-    public string? File { get; set; }
+    public string? File { get; set; } //Aqui debe almacenarse la ruta al archivo para descargarlo despues
 
     public bool IsPremiun { get; set; }
 

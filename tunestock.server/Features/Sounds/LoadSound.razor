@@ -2,7 +2,6 @@
 @inject ISoundService SoundService
 @inject UserSession userSession
 
-
 @using System.ComponentModel.DataAnnotations
 @using System.Net.Sockets
 
@@ -15,7 +14,6 @@
 
 <NavBar></NavBar>
 <br/>
-
 
 <div class="container">
     <div class="row justify-content-center align-items-center" style="max-height: 100vh;">
@@ -36,8 +34,8 @@
 
                 <div class="form-group">
                     <label for="file">Archivo:</label>
-                    <InputText id="file" @bind-Value="@soundModel.File" class="form-control"/>
-                    <ValidationMessage For="@(() => soundModel.SoundName)"/>
+                    <InputFile OnChange="@FileUploaded" class="form-control" />
+                    <ValidationMessage For="@(() => soundModel.File)" />
                 </div>
                 <br/>
 
@@ -50,19 +48,22 @@
 
                 <div class="form-group">
                     <label for="precio">Precio:</label>
-                    <InputNumber id="precio" @bind-Value="@soundModel.Price" type="password" class="form-control"/>
+                    <InputNumber id="precio" @bind-Value="@soundModel.Price" class="form-control"/>
                     <ValidationMessage For="@(() => soundModel.Price)"/>
                 </div>
                 <br/>
 
                 <div class="form-group">
-                    <label for="category">Categoría:</label>
-                    <InputSelect id="category" @bind-Value="soundModel.Label" class="form-control">
+                    <label for="etiqueta">Etiqueta:</label>
+                    <InputSelect id="etiqueta" @bind-Value="selectedLabelId" class="form-control">
+                        <option value="">Seleccione una etiqueta</option>
                         @foreach (var label in Labels) {
-                            <option value="@label">@label.Labelname</option>
+                            <option value="@label.ID">@label.Labelname</option>
                         }
                     </InputSelect>
-                    <ValidationMessage For="@(() => soundModel.Label)"/>
+                    @if (isLabelValidationError) {
+                        <div class="text-danger">Debe seleccionar una etiqueta.</div>
+                    }
                 </div>
                 <br/>
 
@@ -76,29 +77,28 @@
 </div>
 
 @code {
-
-    //Entidad del modelo
+    private IBrowserFile selectedFile;
+    
     private SoundModel soundModel = new SoundModel();
+    private int selectedLabelId;
+    private bool isLabelValidationError;
 
     public List<LabelDto> Labels = new List<LabelDto>();
 
-    //Inyección de dependencias
     [Inject] ISoundService _SoundService { get; set; }
     [Inject] ILabelService _labelService { get; set; }
     [Inject] NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync() {
-        // Llamamos al método del servicio para obtener las etiquetas y las asignamos a la lista Labels
         Response<List<LabelDto>> response = await _labelService.GetAllAsync();
         Labels = response.Data;
     }
 
-    //Definicion del modelo
     private class SoundModel {
         [Required(ErrorMessage = "El sonido debe tener un nombre.")]
         public string SoundName { get; set; }
 
-        [Required(ErrorMessage = "El sonido debe tener un archivo nmms.")]
+        [Required(ErrorMessage = "El sonido debe tener un archivo.")]
         public string File { get; set; }
 
         [Required(ErrorMessage = "Será Free por defecto.")]
@@ -107,26 +107,34 @@
         [Required(ErrorMessage = "Debe tener un precio si es Premium.")]
         public double Price { get; set; }
 
-        [Required(ErrorMessage = "Debe tener una etiqueta")]
         public LabelDto Label { get; set; }
     }
 
-    //Manejar la validación del formulario
     private async void HandleValidSubmit() {
+        soundModel.Label = Labels.FirstOrDefault(l => l.ID == selectedLabelId);
+        if (soundModel.Label == null) {
+            isLabelValidationError = true;
+            return;
+        }
+
+        isLabelValidationError = false;
         if (await PerformSound(soundModel)) {
-            Console.WriteLine("CARGADO CON EXITO SARABAMBICHE");
-            NavigationManager.NavigateTo("/home");
+            Console.WriteLine("CARGADO CON EXITO");
+            NavigationManager.NavigateTo("/mysounds");
         }
     }
 
     private async Task<bool> PerformSound(SoundModel soundModel) {
         try {
-            SoundDto soundDto = new SoundDto();
-            soundDto.UserID = userSession.CurrentUser.ID;
-            soundDto.SoundName = soundModel.SoundName;
-            soundDto.File = soundModel.File;
-            soundDto.IsPremiun = soundModel.IsPremiun;
-            soundDto.Price = soundModel.Price;
+            SoundDto soundDto = new SoundDto {
+                UserID = userSession.CurrentUser.ID,
+                SoundName = soundModel.SoundName,
+                File = soundModel.File,
+                IsPremiun = soundModel.IsPremiun,
+                Price = soundModel.Price
+            };
+
+            Console.WriteLine("SoundDto: " + soundDto.SoundName);
 
             Response<SoundDto> response = await _SoundService.SaveAsync(soundDto, soundModel.Label.ID);
 
@@ -139,18 +147,42 @@
         }
         catch (HttpRequestException ex) {
             Console.WriteLine("Error de solicitud HTTP: " + ex.Message);
-            // Manejar el error de solicitud HTTP específicamente
         }
         catch (SocketException ex) {
             Console.WriteLine("Error de socket: " + ex.Message);
-            // Manejar el error de socket específicamente
         }
         catch (Exception ex) {
             Console.WriteLine("Ha ocurrido un error inesperado: " + ex.Message);
-            // Manejar cualquier otro error de manera genérica
         }
 
         return false;
     }
 
+    public async Task FileUploaded(InputFileChangeEventArgs e) {
+        var browserFile = e.File;
+
+        if (browserFile != null) {
+            try {
+                var uploadFolder = Path.Combine("wwwroot", "uploads");
+                if (!Directory.Exists(uploadFolder)) {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(browserFile.Name);
+                var filePath = Path.Combine(uploadFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await browserFile.OpenReadStream().CopyToAsync(fileStream);
+                }
+                
+                soundModel.File = "/uploads/" + fileName;
+            }
+            catch (Exception ex) {
+                Console.WriteLine("HA OCURRIDO UN ERROR AL INTENTAR CARGAR EL ARCHIVO MP3: " + ex.Message);
+            }
+        }
+        
+    }
+    
 }

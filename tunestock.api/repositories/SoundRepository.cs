@@ -142,4 +142,28 @@ public class SoundRepository : ISoundRepository
             return null;
         }
     }
+    
+    public async Task<List<Sound>> GetBySoundIds(List<int> soundIds)
+    {
+        try
+        {
+            // Convertimos la lista de IDs en un formato adecuado para la consulta SQL
+            var ids = string.Join(",", soundIds);
+
+            // Definimos la consulta SQL
+            var query = $"SELECT * FROM Sound WHERE ID IN ({ids})";
+
+            // Ejecutamos la consulta
+            var sounds = await _dbContext.Connection.QueryAsync<Sound>(query);
+
+            Console.WriteLine("OBTENIDOS CON EXITO - SoundRepository (GetBySoundIds)");
+
+            return sounds.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("HA OCURRIDO UN ERROR - SoundRepository (GetBySoundIds): " + ex.StackTrace);
+            return null;
+        }
+    }
 }

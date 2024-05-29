@@ -190,4 +190,19 @@ public class SoundController : ControllerBase
             return StatusCode(500, response);
         }
     }
+    
+    [HttpPost]
+    [Route("bysoundids")]
+    public async Task<ActionResult<Response<List<SoundDto>>>> GetBySoundIds([FromBody] List<int> soundIds) {
+        var response = new Response<List<SoundDto>>();
+
+        try {
+            response.Data = await _soundService.GetBySoundIds(soundIds);
+            return Ok(response);
+        } catch (Exception ex) {
+            Console.WriteLine("HA OCURRIDO UN ERROR - SoundController (GetBySoundIds): " + ex.Message);
+            response.Errors.Add("HA OCURRIDO UN ERROR - SoundController (GetBySoundIds)");
+            return StatusCode(500, response);
+        }
+    }
 }

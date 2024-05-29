@@ -85,6 +85,19 @@ public class UserDownloadService : IUserDownloadService
         }
     }
 
+    public async Task<List<UserSoundStock>> GetStock(int ID) {
+        try
+        {
+            var userStock = await _userDownloadRepository.GetStock(ID);
+            return userStock;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("HA OCURRIDO UN ERROR - userDownloadService (GetStock):" + ex.StackTrace);
+            return null;
+        }
+    }
+
     public async Task<bool> UserDownloadExists(int ID)
     {
         try

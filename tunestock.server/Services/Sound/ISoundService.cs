@@ -11,4 +11,5 @@ public interface ISoundService
     Task<Response<SoundDto>> UpdateAsync(SoundDto soundDto);
     Task<Response<bool>> DeleteAsync(int id);
     Task<Response<List<SoundDto>>> GetByUser(int id);
+    Task<Response<List<SoundDto>>> GetBySoundIds(List<int> soundIds); 
 }

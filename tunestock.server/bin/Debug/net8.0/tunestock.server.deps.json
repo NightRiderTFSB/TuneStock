@@ -9,6 +9,7 @@
       "tunestock.server/1.0.0": {
         "dependencies": {
           "Blazored.Toast": "4.2.0",
+          "Microsoft.JSInterop": "8.0.5",
           "Newtonsoft.Json": "13.0.1",
           "tunestock.api": "1.0.0",
           "tunestock.core": "1.0.0"
@@ -124,7 +125,7 @@
           "Microsoft.AspNetCore.Components.Forms": "8.0.2",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "Microsoft.JSInterop": "8.0.2",
+          "Microsoft.JSInterop": "8.0.5",
           "System.IO.Pipelines": "8.0.0"
         },
         "runtime": {
@@ -178,11 +179,11 @@
         }
       },
       "Microsoft.Extensions.Primitives/8.0.0": {},
-      "Microsoft.JSInterop/8.0.2": {
+      "Microsoft.JSInterop/8.0.5": {
         "runtime": {
           "lib/net8.0/Microsoft.JSInterop.dll": {
             "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.224.6804"
+            "fileVersion": "8.0.524.22404"
           }
         }
       },
@@ -282,6 +283,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "FluentValidation.DependencyInjectionExtensions": "11.9.0",
           "Microsoft.AspNetCore.OpenApi": "7.0.16",
+          "Microsoft.JSInterop": "8.0.5",
           "MySqlConnector": "2.3.6",
           "Newtonsoft.Json": "13.0.1",
           "SharpGrip.FluentValidation.AutoValidation.Mvc": "1.4.0",
@@ -295,6 +297,7 @@
       "tunestock.core/1.0.0": {
         "dependencies": {
           "Blazored.Toast": "4.2.0",
+          "Microsoft.JSInterop": "8.0.5",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
@@ -442,12 +445,12 @@
       "path": "microsoft.extensions.primitives/8.0.0",
       "hashPath": "microsoft.extensions.primitives.8.0.0.nupkg.sha512"
     },
-    "Microsoft.JSInterop/8.0.2": {
+    "Microsoft.JSInterop/8.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gpzpEohjQMMYlZAqP/haXj2TeQv6p/WrVhtQCearXCz00Gr/gyFA8QlXLqVZW2XKxdQ/3eAtKKtiBFGJg39OiA==",
-      "path": "microsoft.jsinterop/8.0.2",
-      "hashPath": "microsoft.jsinterop.8.0.2.nupkg.sha512"
+      "sha512": "sha512-FzBXOrFd7KAVm+Ot1Gxgu1LdFjxWmn0VGEXXH+LII5nd59oHADrN2yMJGS6gJlDtz4ZcAJ+DWGJLBAFhsLOfRQ==",
+      "path": "microsoft.jsinterop/8.0.5",
+      "hashPath": "microsoft.jsinterop.8.0.5.nupkg.sha512"
     },
     "Microsoft.OpenApi/1.4.3": {
       "type": "package",

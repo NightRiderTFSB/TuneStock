@@ -7,8 +7,14 @@ using tunestock.server.Services.User;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.JSInterop;
+using tunestock.api.services.interfaces;
+using tunestock.server.Services.Downloads;
 using tunestock.server.Services.Label;
+using tunestock.server.Services.Purchases;
 using tunestock.server.Services.Sound;
+using ILabelService = tunestock.server.Services.Label.ILabelService;
+using ISoundService = tunestock.server.Services.Sound.ISoundService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,14 +27,20 @@ builder.Services.AddScoped<DialogService>();
 
 builder.Services.AddSingleton<WeatherForecastService>();
 
-
 builder.Services.AddSingleton<UserSession>();
+
+
+
+
+// Register HttpClient
+builder.Services.AddHttpClient();
+
+// Register services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISoundService, SoundService>();
 builder.Services.AddScoped<ILabelService, LabelService>();
-
-
-
+builder.Services.AddScoped<IPurschaseService, PurchaseService>();
+builder.Services.AddScoped<IDownloadService, DownloadService>();
 
 var app = builder.Build();
 

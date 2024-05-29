@@ -1,3 +1,5 @@
+@using tunestock.server.Services.User
+@inject UserSession _userSession
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <img src="images/TUNESTOCK.png" width="100px">
 
@@ -7,25 +9,31 @@
                 <a class="nav-link" href="/home"><b style="margin-left: 2rem">HOME</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/uploadSound"><b style="margin-left: 2rem">CARGAR SONIDO</b></a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/mysounds"><b style="margin-left: 2rem">MIS SONIDOS</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/downloads"><b style="margin-left: 2rem">MIS DESCARGAS</b></a>
+                <a class="nav-link" href="/mydownloads"><b style="margin-left: 2rem">MIS DESCARGAS</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/labels"><b style="margin-left: 2rem">ETIQUETAS</b></a>
+                <a class="nav-link" href="/mypurchases"><b style="margin-left: 2rem">MIS COMPRAS</b></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/everysounds"><b style="margin-left: 2rem">TODOS LOS SONIDOS</b></a>
+            </li>
+            @if (_userSession.CurrentUser.Admin) {
+                <li class="nav-item">
+                    <a class="nav-link" href="/labels"><b style="margin-left: 2rem">ETIQUETAS</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/allusers"><b style="margin-left: 2rem">USUARIOS</b></a>
+                </li>
+            }
         </ul>
     </div>
     
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    
     
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
@@ -34,12 +42,8 @@
             </li>
         </ul>
     </div>
-
-    
 </nav>
 
-
-
 @code {
-// Aquí puedes agregar lógica relacionada con el navbar si es necesario
+    
 }

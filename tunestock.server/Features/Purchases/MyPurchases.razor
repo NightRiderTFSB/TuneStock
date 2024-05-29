@@ -1,0 +1,169 @@
+@page "/mypurchases"
+@using tunestock.api.dto
+@using tunestock.core.entities
+@using tunestock.core.http
+@using tunestock.server.Services.Downloads
+@using tunestock.server.Services.Purchases
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+@using Microsoft.JSInterop
+
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">MIS COMPRAS</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var purchase in userPurchases) {
+                            <tr>
+                                <td>@purchase.PurchasedDate.ToString("yyyy-MM-dd")</td>
+                                <td>@purchase.SoundName</td>
+                                <td>
+                                    <a @onclick="@(() => DownloadSound(purchase.SoundID))" class="btn btn-primary">Descargar</a>
+
+                                </td>
+                            </tr>
+                        }
+                        @if (!userPurchases.Any()) {
+                            <tr>
+                                <td colspan="3" class="text-center">No se encontraron compras.</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] IPurschaseService _purchaseService { get; set; }
+    [Inject] UserSession _userSession { get; set; }
+    [Inject] ISoundService _soundService { get; set; }
+    [Inject] IDownloadService _downloadService { get; set; }
+    [Inject] NavigationManager _navigationManager { get; set; }
+    [Inject] IJSRuntime JsRuntime { get; set; }
+
+
+    public List<UserPurchaseDto> purchases = new List<UserPurchaseDto>();
+    public List<UserPurchaseViewModel> userPurchases = new List<UserPurchaseViewModel>();
+
+    protected override async Task OnInitializedAsync() {
+        try {
+// Obtener las compras del usuario actual
+            purchases = await _purchaseService.GetAllAsync(_userSession.CurrentUser.ID);
+
+            if (purchases == null || !purchases.Any()) {
+                Console.WriteLine("No hay compras disponibles.");
+                return;
+            }
+
+// Crear una lista para almacenar los sonidos únicos
+            var uniqueSoundIDs = purchases.Select(p => p.SoundID_FK).Distinct().ToList();
+
+            if (uniqueSoundIDs == null || !uniqueSoundIDs.Any()) {
+                Console.WriteLine("No se encontraron IDs únicos de sonidos.");
+                return;
+            }
+
+// Obtener detalles de los sonidos
+            var soundsResponse = await _soundService.GetBySoundIds(uniqueSoundIDs);
+
+            if (soundsResponse == null || soundsResponse.Data == null) {
+                Console.WriteLine("La respuesta del servicio de sonidos es nula.");
+                return;
+            }
+
+            var sounds = soundsResponse.Data;
+
+// Unir datos de compras con sonidos
+            userPurchases = (from purchase in purchases
+                join sound in sounds on purchase.SoundID_FK equals sound.ID
+                select new UserPurchaseViewModel {
+                    PurchasedDate = purchase.PurchasedDate,
+                    SoundName = sound.SoundName,
+                    SoundID = sound.ID
+                }).ToList();
+        }
+        catch (Exception ex) {
+            Console.WriteLine("HA OCURRIDO UN ERROR - OnInitializedAsync: " + ex.Message);
+        }
+    }
+
+    private async Task DownloadSound(int soundID) {
+        try {
+            var soundResponse = await _soundService.GeyByID(soundID);
+            
+            if (soundResponse.Data != null)
+            {
+                var sound = soundResponse.Data;
+                var fileUrl = sound.File;
+                var fileName = sound.SoundName; // Nombre del archivo que se utilizará para descargarlo
+
+                // Construir la URL completa del archivo
+                var fullUrl = $"https://localhost:7026{fileUrl}";
+
+                // Descargar el archivo utilizando JavaScript
+                await JsRuntime.InvokeAsync<object>("downloadFile", fullUrl, fileName);
+            }
+
+            UserDownload userDownload = new UserDownload {
+                DownloadedDate = DateTime.Today,
+                UserID_FK = _userSession.CurrentUser.ID,
+                SoundID_FK = soundID
+            };
+
+            var response = await _downloadService.SaveAsync(userDownload);
+
+            var soundUrl = await GetSoundFileUrlAsync(soundID);
+            if (!string.IsNullOrEmpty(soundUrl)) {
+                await JsRuntime.InvokeAsync<object>("eval", $"window.open('{soundUrl}','_blank')");
+            } else {
+                Console.WriteLine("No se pudo obtener la URL del sonido.");
+            }
+            
+            Console.WriteLine("Descarga exitosa: " + response.DownloadedDate);
+        }
+        catch (Exception ex) {
+            Console.WriteLine("Error en DownloadSound: " + ex.Message);
+        }
+    }
+
+    public class UserPurchaseViewModel {
+        public DateTime PurchasedDate { get; set; }
+        public string SoundName { get; set; }
+        public int SoundID { get; set; }
+    }
+
+    private async Task<string> GetSoundFileUrlAsync(int soundID)
+    {
+        var response = await _soundService.GeyByID(soundID);
+        
+        if (response.Data != null)
+        {
+            return $"https://localhost:7026{response.Data.File}";
+        }
+        else
+        {
+            // Manejar el error o devolver una URL predeterminada
+            return "https://localhost:7026/error";
+        }
+    }
+}
+

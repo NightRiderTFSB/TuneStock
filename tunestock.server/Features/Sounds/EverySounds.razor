@@ -1,0 +1,108 @@
+@page "/everysounds"
+
+@using System.Net.Sockets
+@using tunestock.api.dto
+@using tunestock.core.http
+@using tunestock.server.Services.Purchases
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+@inject ISoundService _soundService
+@inject UserSession _userSession
+
+@inject NavigationManager Navigation
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">TODOS LOS SONIDOS!</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Premium</th>
+                            <th>Precio</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var sound in sounds) {
+                            <tr>
+                                <td>@sound.SoundName</td>
+                                <td>@sound.IsPremiun</td>
+                                <td>@sound.Price</td>
+                                <td>
+                                    <button @onclick="() => PurchaseSound(sound.ID)" class="btn btn-primary">Purchase!</button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<SoundDto> sounds = new List<SoundDto>();
+    
+    [Inject] IPurschaseService _purchaseService { get; set; }
+    
+    protected override async Task OnInitializedAsync() {
+        Response<List<SoundDto>> response = await _soundService.GetAllAsync();
+        sounds = response.Data;
+    }
+
+    private void EditSound(int ID) {
+        Navigation.NavigateTo($"/editsound/{ID}");
+    }
+
+    private async void PurchaseSound(int ID) {
+        try {
+
+            var sound = await _soundService.GeyByID(ID);
+            
+            UserPurchaseDto purchaseDto = new UserPurchaseDto();
+            purchaseDto.PurchasedDate = DateTime.Today;
+            purchaseDto.SoundPrice = sound.Data.Price;
+            purchaseDto.PaymentMethod = "CREDIT CARD";
+            purchaseDto.PaymentStatus = true;
+            purchaseDto.UserID_FK = _userSession.CurrentUser.ID;
+            purchaseDto.SoundID_FK = sound.Data.ID;
+            
+            UserPurchaseDto response = await _purchaseService.SaveAsync(purchaseDto);
+            
+            Console.WriteLine("RESPONSE: " + response);
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine("Error de solicitud HTTP: " + ex.Message);
+            // Manejar el error de solicitud HTTP específicamente
+        }
+        catch (SocketException ex)
+        {
+            Console.WriteLine("Error de socket: " + ex.Message);
+            // Manejar el error de socket específicamente
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ha ocurrido un error inesperado: " + ex.Message);
+            // Manejar cualquier otro error de manera genérica
+        }
+    }
+
+    public void NavigateLoadSound() {
+        Navigation.NavigateTo("/uploadSound");
+    }
+
+}

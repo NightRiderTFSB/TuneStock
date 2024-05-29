@@ -71,6 +71,7 @@ public class UserService : IUserService
                 Username = userDto.Username,
                 Email = userDto.Email,
                 Password = userDto.Password,
+                Admin = userDto.Admin,
                 CreatedBy = "Starryboy",
                 CreatedDate = DateTime.Now,
                 UpdatedBy = "Starryboy",
@@ -99,6 +100,7 @@ public class UserService : IUserService
             user.Username = userDto.Username;
             user.Email = userDto.Email;
             user.Password = userDto.Password;
+            user.Admin = userDto.Admin;
             user.UpdatedBy = "NightRider";
             user.UpdatedDate = DateTime.Now;
 

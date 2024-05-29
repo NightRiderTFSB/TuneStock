@@ -1,0 +1,103 @@
+@page "/mydownloads"
+@using tunestock.core.entities
+@using tunestock.server.Services.Downloads
+@using tunestock.server.Services.Purchases
+@using tunestock.server.Services.Sound
+@using tunestock.server.Services.User
+
+@inject IDownloadService _downloadService
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">MIS DESCARGAS</h1>
+            <br/>
+
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var userDownload in userDownloads) {
+                            <tr>
+                                <td>@userDownload.DownloadedDate.ToString("yyyy-MM-dd")</td>
+                                <td>@userDownload.SoundName</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject] IPurschaseService _purchaseService { get; set; }
+    [Inject] UserSession _userSession { get; set; }
+    [Inject] ISoundService _soundService { get; set; }
+
+    public List<UserDownload> downloads = new List<UserDownload>();
+    public List<UserDownloadView> userDownloads = new List<UserDownloadView>();
+
+    protected override async Task OnInitializedAsync() {
+        try {
+            // Obtener las descargas del usuario actual
+            downloads = await _downloadService.GetAllAsync(_userSession.CurrentUser.ID);
+
+            // Verificar si las descargas son nulas o vacías
+            if (downloads == null || !downloads.Any()) {
+                Console.WriteLine("No hay descargas disponibles.");
+                return;
+            }
+
+            // Obtener IDs únicos de sonidos
+            var uniqueSoundIDs = downloads.Select(s => s.SoundID_FK).Distinct().ToList();
+
+            // Verificar si hay IDs únicos
+            if (uniqueSoundIDs == null || !uniqueSoundIDs.Any()) {
+                Console.WriteLine("No se encontraron IDs únicos de sonidos.");
+                return;
+            }
+
+            // Obtener detalles de los sonidos
+            var soundsResponse = await _soundService.GetBySoundIds(uniqueSoundIDs);
+
+            // Verificar si la respuesta de los sonidos es nula
+            if (soundsResponse == null || soundsResponse.Data == null) {
+                Console.WriteLine("La respuesta del servicio de sonidos es nula.");
+                return;
+            }
+
+            var sounds = soundsResponse.Data;
+
+            // Unir datos de descargas con sonidos
+            userDownloads = (from download in downloads
+                join sound in sounds on download.SoundID_FK equals sound.ID
+                select new UserDownloadView {
+                    DownloadedDate = download.DownloadedDate,
+                    SoundName = sound.SoundName,
+                    SoundID = sound.ID
+                }).ToList();
+        }
+        catch (Exception ex) {
+            Console.WriteLine("HA OCURRIDO UN ERROR - OnInitializedAsync: " + ex.Message);
+        }
+    }
+
+    public class UserDownloadView {
+        public DateTime DownloadedDate { get; set; }
+        public string SoundName { get; set; }
+        public int SoundID { get; set; }
+    }
+
+}

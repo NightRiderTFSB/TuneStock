@@ -1,0 +1,82 @@
+@page "/allusers"
+@using tunestock.api.dto
+@using tunestock.api.services.interfaces
+@using tunestock.core.http
+
+@inject NavigationManager Navigation
+@inject IUserService _userService
+
+<NavBar></NavBar>
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
+        <div class="col-12 col-md-8 col-lg-8 mx-auto">
+            <br/>
+            <h1 class="text-center">USUARIOS!</h1>
+            <br/>
+
+            <div class="row">
+                <button class="btn btn-secondary" @onclick="() => NavigateAddUser()">Añadir nuevo usuario!</button>
+            </div>
+            <br/>
+
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Correo electronico</th>
+                            <th>Contraseña</th>
+                            <th>Administrador</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var user in users) {
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>@user.Email</td>
+                            <td>@user.Password</td>
+                            <td>@user.Admin</td>
+                            <td>
+                                <a @onclick="() => EditUser(user.ID)" class="btn btn-primary" role="button">Editar</a>
+                                <button @onclick="() => DeleteUser(user.ID)" class="btn btn-danger">Eliminar!</button>
+                            </td>
+                        </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<UserDto> users = new List<UserDto>();
+
+    protected override async Task OnInitializedAsync() {
+        Response<List<UserDto>> response = await _userService.GetAllAsync();
+        users = response.Data;
+    }
+
+    private void EditUser(int id) {
+        Navigation.NavigateTo($"/edituser/{id}");
+    }
+
+    private async Task DeleteUser(int id) {
+        var response = await _userService.DeleteAsync(id);
+        Console.WriteLine("ELIMINADO CON EXITO");
+        if (response.Data) {
+            users = users.Where(label => label.ID != id).ToList();
+            
+        }
+    }
+
+    public void NavigateAddUser() {
+        Navigation.NavigateTo("/signup");
+    }
+}

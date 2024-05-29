@@ -16,4 +16,6 @@ public interface IUserDownloadService
     Task<UserDownload> GetByID(int ID);
 
     Task<bool> IfExistsByUserID_FK(int userID_FK);
+    
+    Task<List<UserSoundStock>> GetStock(int ID);
 }

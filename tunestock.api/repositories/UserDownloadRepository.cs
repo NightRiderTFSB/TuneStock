@@ -85,4 +85,18 @@ public class UserDownloadRepository : IUserDownloadRepository
             return null;
         }
     }
+
+    public async Task<List<UserSoundStock>> GetStock(int ID) {
+        try {
+            var query = $"SELECT * FROM UserSoundStock WHERE UserID_FK = {ID};";
+            var userStock = await _dbContext.Connection.QueryAsync<UserSoundStock>(query);
+            Console.WriteLine("UserID_FK → " + userStock.AsList()[0].SoundID_FK);
+            Console.WriteLine("OBTENIDOS CON EXITO - UserDownloadRepository (IfExistsByUserID_FK)");
+            return userStock.ToList();
+        }
+        catch (Exception ex) {
+            Console.WriteLine("HA OCURRIDO UN ERROR - UserDownloadRepository (GetStock)" + ex.StackTrace);
+            return null;
+        }
+    }
 }

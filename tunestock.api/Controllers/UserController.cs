@@ -63,7 +63,8 @@ public class UserController : ControllerBase
             {
                 Username = inputUserDto.Username,
                 Email = inputUserDto.Email,
-                Password = inputUserDto.Password
+                Password = inputUserDto.Password,
+                Admin = inputUserDto.Admin
             };
 
             response.Data = await _userService.SaveAsync(userDto);
@@ -115,7 +116,8 @@ public class UserController : ControllerBase
                 ID = ID,
                 Username = inputUserDto.Username,
                 Email = inputUserDto.Email,
-                Password = inputUserDto.Password
+                Password = inputUserDto.Password,
+                Admin = inputUserDto.Admin
             };
 
             if (!await _userService.UserExists(userDto.ID))
@@ -149,11 +151,11 @@ public class UserController : ControllerBase
 
             if (label == null)
             {
-                response.Errors.Add("Label Not Found");
+                response.Errors.Add("User Not Found");
                 return NotFound(response);
             }
 
-            response.Message = "Label correctly deleted";
+            response.Message = "User correctly deleted";
             return Ok(response);
         }
         catch (Exception ex)
@@ -211,6 +213,7 @@ public class UserController : ControllerBase
             Console.WriteLine("USR: " + user.ID);
             Console.WriteLine("Email: " + user.Email);
             Console.WriteLine("Pass: " + user.Password);
+            Console.WriteLine("Admin: " + user.Admin);
             if (user == null)
             {
                 response.Errors.Add("User not found.");
